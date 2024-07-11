@@ -23,7 +23,13 @@ func AuthMiddleware() gin.HandlerFunc {
 		}
 		rid := c.Query("rid")
 		var resume models.Resumes
-		s.First(&resume, "id = ? and uid = ?", rid, user.ID)
+		if err := s.First(&resume, "id = ? and uid = ?", rid, user.ID).Error; err != nil {
+			if !strings.Contains(c.FullPath(), "resumes") {
+				s.Msg(http.StatusNotFound, "当前简历不存在，请选择简历!")
+				c.Abort()
+				return
+			}
+		}
 
 		c.Set("$", libs.HttpStatus{DB: s.DB, Context: c, User: user, Resume: resume})
 		c.Next()

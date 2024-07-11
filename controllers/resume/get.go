@@ -18,7 +18,7 @@ func Get(c *gin.Context) {
 		return
 	}
 
-	s.Json(http.StatusOK, "ok", resumes)
+	s.Json(http.StatusOK, "数据查询成功！", resumes)
 }
 
 // GetResumeId 判断简历是否存在

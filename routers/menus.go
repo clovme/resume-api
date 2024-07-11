@@ -1,9 +1,9 @@
 package routers
 
 import (
-	"resume/controllers"
+	"resume/controllers/menus"
 )
 
 func (r *Routers) Menus() {
-	r.Protected.GET("/menus", controllers.GetMenus)
+	r.Protected.GET("/menus", menus.Get)
 }

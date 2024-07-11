@@ -4,7 +4,6 @@ import (
 	"errors"
 	"gorm.io/gorm"
 	"log"
-	"net/http"
 	"resume/libs"
 	"resume/models"
 )
@@ -14,7 +13,6 @@ func CopyMenus(tx *gorm.DB, s libs.HttpStatus, resume models.Resumes) {
 	var menus []models.Menus
 	if err := tx.Find(&menus, "rid = 0").Error; err != nil {
 		log.Println("系统菜单查询失败！", err.Error())
-		s.Msg(http.StatusInternalServerError, "服务器异常，请重试！")
 		return
 	}
 	// 创建简历菜单

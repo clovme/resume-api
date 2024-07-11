@@ -10,7 +10,7 @@ import (
 func Get(c *gin.Context) {
 	s := libs.Context(c)
 
-	var basic models.BasicInfo
+	var basic models.Basicinfo
 	if err := s.Find(&basic, "rid = ? and uid = ?", s.Resume.ID, s.User.ID).Error; err != nil {
 		s.Msg(http.StatusNotFound, "没有查询到基础信息！")
 		return

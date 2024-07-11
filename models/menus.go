@@ -6,7 +6,7 @@ import "time"
 type Menus struct {
 	ID         uint      `gorm:"primaryKey" json:"id"`         // 数据ID
 	UID        uint      `gorm:"column:uid;not null" json:"-"` // 用户ID
-	RID        uint      `gorm:"column:rid" json:"-"`          // 简历ID
+	RID        uint      `gorm:"column:rid;not null" json:"-"` // 简历ID
 	Title      string    `gorm:"size:10" json:"title"`         // 菜单标题
 	Name       string    `gorm:"size:20" json:"name"`          // 菜单名称
 	IsActivate bool      `json:"isActivate"`                   // 激活选项

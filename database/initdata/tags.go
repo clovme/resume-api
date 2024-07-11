@@ -9,6 +9,7 @@ import (
 	"time"
 )
 
+// Tags 初始化标签
 func (d *InitData) Tags() {
 	modelList := []models.Tags{
 		{RID: 0, UID: 0, Type: enums.Skills, Name: "Office软件", IsChecked: false, CreatedAt: time.Now(), UpdatedAt: time.Now()},
@@ -30,12 +31,12 @@ func (d *InitData) Tags() {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				// 数据不存在，插入新记录
 				if err := d.Db.Create(&model).Error; err != nil {
-					log.Println("[初始化]用户创建失败:", err)
+					log.Println("[初始化]标签创建失败:", err)
 				} else {
-					log.Println("[初始化]用户创建创建成功:", model)
+					log.Println("[初始化]标签创建创建成功:", model)
 				}
 			} else {
-				log.Println("[初始化]用户查询失败:", err)
+				log.Println("[初始化]标签查询失败:", err)
 			}
 		}
 	}
