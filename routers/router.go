@@ -1,36 +1,46 @@
 package routers
 
 import (
+	"embed"
 	"github.com/gin-gonic/gin"
-	"resume/controllers"
-	"resume/controllers/basicinfo"
-	"resume/controllers/resume"
-	"resume/controllers/users"
+	"gorm.io/gorm"
+	"html/template"
+	"io/fs"
+	"net/http"
+	"reflect"
 	"resume/middleware"
 )
 
-func Router(router *gin.Engine) {
-	router.GET("", controllers.GetIndexView)
+type Routers struct {
+	Router    *gin.Engine
+	Public    *gin.RouterGroup
+	Protected *gin.RouterGroup
+}
+
+// Initialization 初始化路由
+// @params router web 路由
+// @params db 数据库连接信息
+// @params static embed.FS
+func Initialization(router *gin.Engine, db *gorm.DB, static embed.FS) {
+	// 使用数据库中间件
+	router.Use(middleware.DBMiddleware(db))
+	router.Use(middleware.CorsMiddleware())
+	router.Use(middleware.NotFoundHandler())
+
+	// 加载嵌入的模板文件
+	tmpl := template.Must(template.New("").ParseFS(static, "public/*.html"))
+	router.SetHTMLTemplate(tmpl)
+
+	// 提供嵌入的静态文件
+	staticFS, _ := fs.Sub(static, "public/assets")
+	router.StaticFS("/assets", http.FS(staticFS))
 
 	public := router.Group("/api")
-	{
-		public.GET("/icon", controllers.GetIcon)
-		public.POST("/login", users.SignIn)
-	}
-
 	protected := router.Group("/api")
 	protected.Use(middleware.AuthMiddleware())
-	{
-		protected.PUT("/users", users.Put)
-		protected.GET("/menus", controllers.GetMenus)
 
-		protected.GET("/resumes", resume.Get)
-		protected.GET("/resumes/id", resume.GetResumeId)
-		protected.GET("/resumes/check", resume.CheckResume)
-		protected.PUT("/resumes", resume.Put)
-		protected.POST("/resumes", resume.Post)
-		protected.DELETE("/resumes", resume.Delete)
-
-		protected.GET("/basicinfo", basicinfo.Get)
+	v := reflect.ValueOf(&Routers{Router: router, Public: public, Protected: protected})
+	for i := 0; i < v.NumMethod(); i++ {
+		v.Method(i).Call(nil)
 	}
 }

@@ -7,13 +7,9 @@ import (
 	"gopkg.in/ini.v1"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
-	"html/template"
-	"io/fs"
 	"log"
-	"net/http"
 	"resume/database"
 	"resume/libs"
-	"resume/middleware"
 	"resume/routers"
 )
 
@@ -41,22 +37,8 @@ func main() {
 	db := database.AutoMigrate(dsn)
 
 	router := gin.Default()
-
-	// 使用数据库中间件
-	router.Use(middleware.DBMiddleware(db))
-	router.Use(middleware.CorsMiddleware())
-	router.Use(middleware.NotFoundHandler())
-
-	// 加载嵌入的模板文件
-	tmpl := template.Must(template.New("").ParseFS(static, "public/*.html"))
-	router.SetHTMLTemplate(tmpl)
-
-	// 提供嵌入的静态文件
-	staticFS, _ := fs.Sub(static, "public/assets")
-	router.StaticFS("/assets", http.FS(staticFS))
-
 	// 视图路由配置
-	routers.Router(router)
+	routers.Initialization(router, db, static)
 
 	host := cfg.Section("server").Key("host").String()
 	port := cfg.Section("server").Key("port").String()

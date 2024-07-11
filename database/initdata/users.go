@@ -15,18 +15,16 @@ func (d *InitData) Users() {
 	}
 
 	for _, user := range users {
-		var data models.Users
-
-		if err := d.Db.Where("username = ?", user.Username).First(&data).Error; err != nil {
+		if err := d.Db.Where("username = ?", user.Username).First(&models.Users{}).Error; err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				// 数据不存在，插入新记录
 				if err := d.Db.Create(&user).Error; err != nil {
 					log.Println("[初始化]用户创建失败:", err)
 				} else {
-					log.Println("[初始化]用户创建创建成功:", data)
+					log.Println("[初始化]用户创建创建成功:", user)
 				}
 			} else {
-				log.Println("[初始化]用户查询失败:", data)
+				log.Println("[初始化]用户查询失败:", err)
 			}
 		}
 	}
