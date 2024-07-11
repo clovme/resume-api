@@ -9,8 +9,8 @@ import (
 	"log"
 )
 
-// OpenDB MySQL数据库初始化 和 打开数据库
-func OpenDB(cfg *ini.File) gorm.Dialector {
+// OpenMySQLDB MySQL数据库初始化 和 打开数据库
+func OpenMySQLDB(cfg *ini.File) gorm.Dialector {
 	var err error
 
 	// 获取特定节和键的值
