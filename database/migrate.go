@@ -15,13 +15,12 @@ func AutoMigrate(dbn gorm.Dialector) *gorm.DB {
 	}
 
 	err = db.AutoMigrate(
+		&models.Tags{},
 		&models.Users{},
-		&models.BasicInfo{},
 		&models.Menus{},
 		&models.Resumes{},
-		&models.SkillsExpertise{},
-		&models.SkillsExpertiseTags{},
-		&models.SkillsExpertiseCheckedTags{},
+		&models.BasicInfo{},
+		&models.Skills{},
 	)
 
 	if err != nil {

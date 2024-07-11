@@ -9,7 +9,7 @@ import (
 )
 
 func (d *InitData) Menus() {
-	menus := []models.Menus{
+	modelList := []models.Menus{
 		{RID: 0, UID: 0, Title: "基础信息", Name: "BasicInfo", IsActivate: true, IsOption: false, IsChecked: true, IsPage: true, Sort: 0, CreatedAt: time.Now(), UpdatedAt: time.Now()},
 		{RID: 0, UID: 0, Title: "求职岗位", Name: "JobPosition", IsActivate: false, IsOption: true, IsChecked: true, IsPage: false, Sort: 1, CreatedAt: time.Now(), UpdatedAt: time.Now()},
 		{RID: 0, UID: 0, Title: "技能特长", Name: "SkillsExpertise", IsActivate: false, IsOption: true, IsChecked: true, IsPage: true, Sort: 2, CreatedAt: time.Now(), UpdatedAt: time.Now()},
@@ -25,14 +25,14 @@ func (d *InitData) Menus() {
 		{RID: 0, UID: 0, Title: "求职意向", Name: "JobIntentions", IsActivate: false, IsOption: true, IsChecked: true, IsPage: true, Sort: 12, CreatedAt: time.Now(), UpdatedAt: time.Now()},
 	}
 
-	for _, menu := range menus {
-		if err := d.Db.Where("title = ? and name = ? and rid = 0 and uid = 0", menu.Title, menu.Name).First(&models.Menus{}).Error; err != nil {
+	for _, model := range modelList {
+		if err := d.Db.Where("title = ? and name = ? and rid = 0 and uid = 0", model.Title, model.Name).First(&models.Menus{}).Error; err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				// 数据不存在，插入新记录
-				if err := d.Db.Create(&menu).Error; err != nil {
+				if err := d.Db.Create(&model).Error; err != nil {
 					log.Fatalln("[初始化]菜单创建失败:", err)
 				} else {
-					log.Println("[初始化]菜单创建创建成功:", menu)
+					log.Println("[初始化]菜单创建创建成功:", model)
 				}
 			} else {
 				log.Fatalln("[初始化]菜单查询失败:", err)
