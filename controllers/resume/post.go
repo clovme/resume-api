@@ -25,7 +25,7 @@ func Post(c *gin.Context) {
 		return
 	}
 
-	if err := s.First(&resume, "uid = ? and name = ?", s.User.ID, resume.Name).Error; err == nil {
+	if err := s.First(&resume, "uid = ? AND name = ?", s.User.ID, resume.Name).Error; err == nil {
 		s.Json(http.StatusForbidden, "简历名称已存在", false)
 		return
 	}

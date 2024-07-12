@@ -6,24 +6,23 @@ import (
 	"log"
 	"resume/models"
 	"resume/types/enums"
-	"time"
 )
 
 // Tags 初始化标签
 func (d *InitData) Tags() {
 	modelList := []models.Tags{
-		{RID: 0, UID: 0, Type: enums.Skills, Name: "Office软件", IsChecked: false, CreatedAt: time.Now(), UpdatedAt: time.Now()},
-		{RID: 0, UID: 0, Type: enums.Skills, Name: "沟通能力", IsChecked: false, CreatedAt: time.Now(), UpdatedAt: time.Now()},
-		{RID: 0, UID: 0, Type: enums.Skills, Name: "口才", IsChecked: false, CreatedAt: time.Now(), UpdatedAt: time.Now()},
-		{RID: 0, UID: 0, Type: enums.Skills, Name: "文案编辑", IsChecked: false, CreatedAt: time.Now(), UpdatedAt: time.Now()},
-		{RID: 0, UID: 0, Type: enums.Skills, Name: "数据分析", IsChecked: false, CreatedAt: time.Now(), UpdatedAt: time.Now()},
-		{RID: 0, UID: 0, Type: enums.Skills, Name: "推广运营", IsChecked: false, CreatedAt: time.Now(), UpdatedAt: time.Now()},
-		{RID: 0, UID: 0, Type: enums.Skills, Name: "产品设计", IsChecked: false, CreatedAt: time.Now(), UpdatedAt: time.Now()},
-		{RID: 0, UID: 0, Type: enums.Skills, Name: "JavaScript", IsChecked: false, CreatedAt: time.Now(), UpdatedAt: time.Now()},
-		{RID: 0, UID: 0, Type: enums.Skills, Name: "Python", IsChecked: false, CreatedAt: time.Now(), UpdatedAt: time.Now()},
-		{RID: 0, UID: 0, Type: enums.Skills, Name: "PHP", IsChecked: false, CreatedAt: time.Now(), UpdatedAt: time.Now()},
-		{RID: 0, UID: 0, Type: enums.Skills, Name: "NodeJs", IsChecked: false, CreatedAt: time.Now(), UpdatedAt: time.Now()},
-		{RID: 0, UID: 0, Type: enums.Skills, Name: "英语", IsChecked: false, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+		{BaseModelWithRIDUID: d.ridUID(), Type: enums.Skills, Name: "Office软件", IsChecked: false},
+		{BaseModelWithRIDUID: d.ridUID(), Type: enums.Skills, Name: "沟通能力", IsChecked: false},
+		{BaseModelWithRIDUID: d.ridUID(), Type: enums.Skills, Name: "口才", IsChecked: false},
+		{BaseModelWithRIDUID: d.ridUID(), Type: enums.Skills, Name: "文案编辑", IsChecked: false},
+		{BaseModelWithRIDUID: d.ridUID(), Type: enums.Skills, Name: "数据分析", IsChecked: false},
+		{BaseModelWithRIDUID: d.ridUID(), Type: enums.Skills, Name: "推广运营", IsChecked: false},
+		{BaseModelWithRIDUID: d.ridUID(), Type: enums.Skills, Name: "产品设计", IsChecked: false},
+		{BaseModelWithRIDUID: d.ridUID(), Type: enums.Skills, Name: "JavaScript", IsChecked: false},
+		{BaseModelWithRIDUID: d.ridUID(), Type: enums.Skills, Name: "Python", IsChecked: false},
+		{BaseModelWithRIDUID: d.ridUID(), Type: enums.Skills, Name: "PHP", IsChecked: false},
+		{BaseModelWithRIDUID: d.ridUID(), Type: enums.Skills, Name: "NodeJs", IsChecked: false},
+		{BaseModelWithRIDUID: d.ridUID(), Type: enums.Skills, Name: "英语", IsChecked: false},
 	}
 
 	for _, model := range modelList {

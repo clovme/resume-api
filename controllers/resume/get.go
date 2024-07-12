@@ -14,7 +14,7 @@ func Get(c *gin.Context) {
 
 	var resumes []models.Resumes
 	if err := s.Find(&resumes, "uid = ?", s.User.ID).Error; err != nil {
-		s.Msg(http.StatusNotFound, "暂无数据")
+		s.Msg(http.StatusNotFound, "没有查询得到简历数据")
 		return
 	}
 
@@ -28,7 +28,7 @@ func GetResumeId(c *gin.Context) {
 	rid := c.Query("rid")
 
 	var resume models.Resumes
-	if err := s.First(&resume, "id = ? and uid = ?", rid, s.User.ID).Error; err != nil {
+	if err := s.First(&resume, "id = ? AND uid = ?", rid, s.User.ID).Error; err != nil {
 		s.Msg(http.StatusNotFound, "简历id不存在")
 		return
 	}
@@ -42,7 +42,7 @@ func CheckResume(c *gin.Context) {
 
 	if len(strings.Trim(name, "")) > 0 {
 		var resume models.Resumes
-		if err := s.First(&resume, "uid = ? and name = ?", s.User.ID, name).Error; err == nil {
+		if err := s.First(&resume, "uid = ? AND name = ?", s.User.ID, name).Error; err == nil {
 			s.Json(http.StatusBadRequest, "简历名称已存在", false)
 		} else {
 			s.Json(http.StatusOK, "简历名称不存在", true)

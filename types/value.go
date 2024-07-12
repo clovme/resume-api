@@ -1,0 +1,5 @@
+package types
+
+const (
+	Ox320 string = "00000000000000000000000000000000"
+)

@@ -25,7 +25,7 @@ func Put(c *gin.Context) {
 	}
 
 	var resume models.Resumes
-	if err := s.First(&resume, "uid = ? and id = ?", s.User.ID, params.ID).Error; err != nil {
+	if err := s.First(&resume, "uid = ? AND id = ?", s.User.ID, params.ID).Error; err != nil {
 		s.Msg(http.StatusNotFound, "更新失败，更新的数据不存在！")
 		return
 	}

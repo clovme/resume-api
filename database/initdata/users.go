@@ -13,8 +13,8 @@ import (
 // Users 初始化用户
 func (d *InitData) Users() {
 	modelList := []models.Users{
-		{Nickname: "我的", Username: "admin", Password: libs.MD5("admin"), Token: libs.MD5(uuid.New().String()), ExpiresAt: time.Now(), CreatedAt: time.Now(), UpdatedAt: time.Now()},
-		{Nickname: "Admin", Username: "admin1", Password: libs.MD5("admin"), Token: libs.MD5(uuid.New().String()), ExpiresAt: time.Now(), CreatedAt: time.Now(), UpdatedAt: time.Now()},
+		{Nickname: "我的", Username: "admin", Password: libs.MD5("admin"), Token: libs.MD5(uuid.New().String()), ExpiresAt: time.Now()},
+		{Nickname: "Admin", Username: "admin1", Password: libs.MD5("admin"), Token: libs.MD5(uuid.New().String()), ExpiresAt: time.Now()},
 	}
 
 	for _, model := range modelList {

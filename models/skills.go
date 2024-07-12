@@ -2,16 +2,11 @@ package models
 
 import (
 	"resume/types"
-	"time"
 )
 
 // Skills 技能特长
 type Skills struct {
-	ID          uint       `gorm:"primaryKey" json:"id"`         // ID
-	RID         uint       `gorm:"column:rid;not null" json:"-"` // 简历ID
-	UID         uint       `gorm:"column:uid;not null" json:"-"` // 用户ID
+	BaseModelWithRIDUID
 	Content     string     `gorm:"type:text" json:"content"`     // 技能特长内容
-	CreatedAt   time.Time  `json:"created_at"`                   // 创建时间
-	UpdatedAt   time.Time  `json:"updated_at"`                   // 更新时间
 	CheckedTags types.JSON `gorm:"type:json" json:"checkedTags"` // 选中的标签
 }

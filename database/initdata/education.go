@@ -5,13 +5,12 @@ import (
 	"gorm.io/gorm"
 	"log"
 	"resume/models"
-	"time"
 )
 
 // Education 教育经历
 func (d *InitData) Education() {
 	modelList := []models.Education{
-		{RID: 0, UID: 0, StartAt: "2017-06", EndAt: "2019-08", Name: "月球研发学院", Major: "月地开发技术", ToNow: false, Degree: "硕士", Sort: 0, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+		{BaseModelWithRIDUID: d.ridUID(), StartAt: "2017-06", EndAt: "2019-08", Name: "月球研发学院", Major: "月地开发技术", ToNow: false, Degree: "硕士", Sort: 0},
 	}
 
 	for _, model := range modelList {

@@ -6,23 +6,21 @@ import (
 	"log"
 	"resume/libs"
 	"resume/models"
+	"resume/types"
 )
 
 func CopyMenus(tx *gorm.DB, s libs.HttpStatus, resume models.Resumes) {
 	// 复制菜单
 	var menus []models.Menus
-	if err := tx.Find(&menus, "rid = 0").Error; err != nil {
+	if err := tx.Find(&menus, "rid = ? AND uid = ?", types.Ox320, types.Ox320).Error; err != nil {
 		log.Println("系统菜单查询失败！", err.Error())
 		return
 	}
 	// 创建简历菜单
 	for _, menu := range menus {
-		var data models.Menus
-
-		if err := tx.Where("rid = ? and uid = ? and title = ?", resume.ID, s.User.ID, menu.Title).First(&data).Error; err != nil {
+		if err := tx.Where("rid = ? AND uid = ? AND title = ?", resume.ID, s.User.ID, menu.Title).First(&models.Menus{}).Error; err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				// 数据不存在，插入新记录
-				menu.ID = 0
 				menu.UID = s.User.ID
 				menu.RID = resume.ID
 				if err := tx.Create(&menu).Error; err != nil {

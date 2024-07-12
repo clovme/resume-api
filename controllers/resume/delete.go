@@ -19,17 +19,17 @@ func Delete(c *gin.Context) {
 		return
 	}
 
-	if err := s.First(&resume, "uid = ? and id = ?", s.User.ID, rid).Error; err != nil {
+	if err := s.First(&resume, "uid = ? AND id = ?", s.User.ID, rid).Error; err != nil {
 		s.Msg(http.StatusNotFound, "删除失败，简历名称不存在！")
 		return
 	}
 
 	libs.Transaction(s, func(tx *gorm.DB) {
-		if !libs.DeleteData(s, "简历", s.Where("id = ? and uid = ?", rid, s.User.ID).Delete(&models.Resumes{})) {
+		if !libs.DeleteData(s, "简历", s.Where("id = ? AND uid = ?", rid, s.User.ID).Delete(&models.Resumes{})) {
 			return
 		}
 
-		if !libs.DeleteData(s, "菜单", s.Where("uid = ? and rid = ?", resume.UID, resume.ID).Delete(&models.Menus{})) {
+		if !libs.DeleteData(s, "菜单", s.Where("uid = ? AND rid = ?", resume.UID, resume.ID).Delete(&models.Menus{})) {
 			return
 		}
 

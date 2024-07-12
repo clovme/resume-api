@@ -5,13 +5,12 @@ import (
 	"gorm.io/gorm"
 	"log"
 	"resume/models"
-	"time"
 )
 
 // Evaluation 自我评价
 func (d *InitData) Evaluation() {
 	modelList := []models.Evaluation{
-		{RID: 0, UID: 0, Content: "<ol><li data-list=\"ordered\"><span class=\"ql-ui\" contenteditable=\"false\"></span><strong>勤奋努力：</strong>我总是全力以赴，确保每项任务按时高质量完成，通过持续努力实现目标。</li><li data-list=\"ordered\"><span class=\"ql-ui\" contenteditable=\"false\"></span><strong>创新思维：</strong>我具备创新思维，喜欢尝试新方法，提出创造性解决方案，在复杂情境中找到突破口。</li><li data-list=\"ordered\"><span class=\"ql-ui\" contenteditable=\"false\"></span><strong>团队合作：</strong>我善于沟通和协作，倾听意见，分享经验，团队合作中不断学习和成长。</li></ol>", CreatedAt: time.Now(), UpdatedAt: time.Now()},
+		{BaseModelWithRIDUID: d.ridUID(), Content: "<ol><li data-list=\"ordered\"><span class=\"ql-ui\" contenteditable=\"false\"></span><strong>勤奋努力：</strong>我总是全力以赴，确保每项任务按时高质量完成，通过持续努力实现目标。</li><li data-list=\"ordered\"><span class=\"ql-ui\" contenteditable=\"false\"></span><strong>创新思维：</strong>我具备创新思维，喜欢尝试新方法，提出创造性解决方案，在复杂情境中找到突破口。</li><li data-list=\"ordered\"><span class=\"ql-ui\" contenteditable=\"false\"></span><strong>团队合作：</strong>我善于沟通和协作，倾听意见，分享经验，团队合作中不断学习和成长。</li></ol>"},
 	}
 
 	for _, model := range modelList {
