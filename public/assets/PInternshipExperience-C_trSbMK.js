@@ -1,1 +1,0 @@
-import{M as t}from"./ModuleTitle-DJSdvjHe.js";import{d as e,k as s,o as i}from"./index-DJ7dvpCP.js";const l=e({__name:"PInternshipExperience",props:{title:{}},setup:e=>(e,l)=>(i(),s(t,{title:e.title},null,8,["title"]))});export{l as default};
