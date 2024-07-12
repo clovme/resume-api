@@ -4,9 +4,9 @@ import (
 	"gorm.io/datatypes"
 )
 
-// Skills 技能特长
-type Skills struct {
+// Hobbies 兴趣爱好
+type Hobbies struct {
 	BaseModelWithRIDUID
-	Content     string         `gorm:"type:text" json:"content"`     // 技能特长内容
+	Content     string         `gorm:"type:text" json:"content"`     // 内容
 	CheckedTags datatypes.JSON `gorm:"type:json" json:"checkedTags"` // 选中的标签
 }

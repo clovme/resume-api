@@ -6,13 +6,13 @@ import (
 	"log"
 	"resume/libs"
 	"resume/models"
-	"resume/types"
+	"resume/types/enums"
 )
 
 func CopyMenus(tx *gorm.DB, s libs.HttpStatus, resume models.Resumes) {
 	// 复制菜单
 	var menus []models.Menus
-	if err := tx.Find(&menus, "rid = ? AND uid = ?", types.Ox320, types.Ox320).Error; err != nil {
+	if err := tx.Find(&menus, "rid = ? AND uid = ?", enums.Vx32, enums.Vx32).Error; err != nil {
 		log.Println("系统菜单查询失败！", err.Error())
 		return
 	}

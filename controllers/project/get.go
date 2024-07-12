@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"resume/libs"
 	"resume/models"
-	"resume/types"
+	"resume/types/enums"
 )
 
 func Get(c *gin.Context) {
@@ -13,12 +13,12 @@ func Get(c *gin.Context) {
 
 	var project []models.Project
 	if err := s.Find(&project, "rid = ? AND uid = ?", s.Resume.ID, s.User.ID).Error; err != nil {
-		s.Msg(http.StatusNotFound, "没有查询到项目数据！")
+		s.Msg(http.StatusNotFound, "没有查询到数据！")
 		return
 	}
 	if len(project) <= 0 {
-		if err := s.Find(&project, "rid = ? AND uid = ?", types.Ox320, types.Ox320).Error; err != nil {
-			s.Msg(http.StatusNotFound, "没有查询到项目数据！")
+		if err := s.Find(&project, "rid = ? AND uid = ?", enums.Vx32, enums.Vx32).Error; err != nil {
+			s.Msg(http.StatusNotFound, "没有查询到数据！")
 			return
 		}
 	}

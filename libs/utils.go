@@ -9,7 +9,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"resume/types"
 )
 
 func CreateDir(folderPath string) {
@@ -53,7 +52,7 @@ func MD5(str string) string {
 }
 
 // Transaction 开启事务
-func Transaction(s HttpStatus, callback types.Callback) {
+func Transaction(s HttpStatus, callback func(tx *gorm.DB)) {
 	// 开始事务
 	tx := s.Begin()
 	// 事务操作

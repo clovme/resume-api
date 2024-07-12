@@ -14,7 +14,7 @@ func Get(c *gin.Context) {
 
 	var resumes []models.Resumes
 	if err := s.Find(&resumes, "uid = ?", s.User.ID).Error; err != nil {
-		s.Msg(http.StatusNotFound, "没有查询得到简历数据")
+		s.Msg(http.StatusNotFound, "没有查询得到数据")
 		return
 	}
 
