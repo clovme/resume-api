@@ -2,6 +2,6 @@ package routers
 
 import "resume/controllers/skills"
 
-func (r *Routers) SkillsExpertise() {
-	r.Protected.GET("/skills", skills.Get)
+func (router *Routers) SkillsExpertise() {
+	router.Protected.GET("/skills", skills.Get)
 }

@@ -4,6 +4,6 @@ import (
 	"resume/controllers/users"
 )
 
-func (r *Routers) Users() {
-	r.Protected.PUT("/users", users.Put)
+func (router *Routers) Users() {
+	router.Protected.PUT("/users", users.Put)
 }

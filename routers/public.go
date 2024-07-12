@@ -5,7 +5,7 @@ import (
 	"resume/controllers/users"
 )
 
-func (r *Routers) PublicGroup() {
-	r.Public.GET("/icon", controllers.GetIcon)
-	r.Public.POST("/login", users.SignIn)
+func (router *Routers) PublicGroup() {
+	router.Public.GET("/icon", controllers.GetIcon)
+	router.Public.POST("/login", users.SignIn)
 }

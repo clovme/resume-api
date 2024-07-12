@@ -4,6 +4,7 @@ import (
 	"resume/controllers/menus"
 )
 
-func (r *Routers) Menus() {
-	r.Protected.GET("/menus", menus.Get)
+func (router *Routers) Menus() {
+	router.Protected.GET("/menus", menus.Get)
+	router.Protected.PUT("/menus", menus.Put)
 }

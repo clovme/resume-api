@@ -4,6 +4,6 @@ import (
 	"resume/controllers/applicationinfo"
 )
 
-func (r *Routers) ApplicationInfo() {
-	r.Protected.GET("/applicationinfo", applicationinfo.Get)
+func (router *Routers) ApplicationInfo() {
+	router.Protected.GET("/applicationinfo", applicationinfo.Get)
 }

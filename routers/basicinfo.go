@@ -2,6 +2,6 @@ package routers
 
 import "resume/controllers/basicinfo"
 
-func (r *Routers) BasicInfo() {
-	r.Protected.GET("/basicinfo", basicinfo.Get)
+func (router *Routers) BasicInfo() {
+	router.Protected.GET("/basicinfo", basicinfo.Get)
 }

@@ -4,6 +4,6 @@ import (
 	"resume/controllers/honors"
 )
 
-func (r *Routers) Honors() {
-	r.Protected.GET("/honors", honors.Get)
+func (router *Routers) Honors() {
+	router.Protected.GET("/honors", honors.Get)
 }

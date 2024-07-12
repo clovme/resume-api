@@ -4,6 +4,6 @@ import (
 	"resume/controllers/hobbies"
 )
 
-func (r *Routers) Hobbies() {
-	r.Protected.GET("/hobbies", hobbies.Get)
+func (router *Routers) Hobbies() {
+	router.Protected.GET("/hobbies", hobbies.Get)
 }

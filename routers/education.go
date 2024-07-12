@@ -2,6 +2,6 @@ package routers
 
 import "resume/controllers/education"
 
-func (r *Routers) Education() {
-	r.Protected.GET("/education", education.Get)
+func (router *Routers) Education() {
+	router.Protected.GET("/education", education.Get)
 }

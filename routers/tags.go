@@ -2,6 +2,6 @@ package routers
 
 import "resume/controllers/tags"
 
-func (r *Routers) Tags() {
-	r.Protected.GET("/tags", tags.Get)
+func (router *Routers) Tags() {
+	router.Protected.GET("/tags", tags.Get)
 }
