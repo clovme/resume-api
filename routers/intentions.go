@@ -4,6 +4,6 @@ import (
 	"resume/controllers/intentions"
 )
 
-func (router *Routers) Intentions() {
+func (router *Routers) IntentionsGET() {
 	router.Protected.GET("/intentions", intentions.Get)
 }

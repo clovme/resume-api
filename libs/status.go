@@ -17,17 +17,17 @@ type HttpStatus struct {
 	Data         interface{}    `json:"data"`
 }
 
-func (t *HttpStatus) Msg(code int, message string) {
-	t.Code = code
-	t.Message = message
-	t.Context.JSON(http.StatusOK, t)
+func (s *HttpStatus) Msg(code int, message string) {
+	s.Code = code
+	s.Message = message
+	s.Context.JSON(http.StatusOK, s)
 }
 
-func (t *HttpStatus) Json(code int, message string, data interface{}) {
-	t.Code = code
-	t.Message = message
-	t.Data = data
-	t.Context.JSON(http.StatusOK, t)
+func (s *HttpStatus) Json(code int, message string, data interface{}) {
+	s.Code = code
+	s.Message = message
+	s.Data = data
+	s.Context.JSON(http.StatusOK, s)
 }
 
 func Context(c *gin.Context) HttpStatus {

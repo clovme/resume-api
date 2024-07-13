@@ -4,6 +4,6 @@ import (
 	"resume/controllers/project"
 )
 
-func (router *Routers) Project() {
+func (router *Routers) ProjectGET() {
 	router.Protected.GET("/project", project.Get)
 }

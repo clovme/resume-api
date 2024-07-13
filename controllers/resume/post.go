@@ -41,7 +41,20 @@ func Post(c *gin.Context) {
 		}
 
 		// 复制菜单
-		utils.CopyMenus(tx, s, resume)
+		utils.CopyData[models.Menus]("菜单", tx, []models.Menus{}, func(m *models.Menus) (string, *gorm.DB) {
+			m.RID = resume.ID
+			m.UID = s.User.ID
+			return resume.Name, tx.Where("rid = ? AND uid = ? AND title = ?", resume.ID, s.User.ID, m.Title)
+		})
+
+		// 复制模板基础信息
+		utils.CopyData[models.Basicinfo]("基础信息", tx, []models.Basicinfo{}, func(m *models.Basicinfo) (string, *gorm.DB) {
+			m.RID = resume.ID
+			m.UID = s.User.ID
+			m.Name = resume.Name
+
+			return resume.Name, tx.Where("rid = ? AND uid = ?", resume.ID, s.User.ID)
+		})
 	})
 
 	s.Json(http.StatusOK, "ok", resume)

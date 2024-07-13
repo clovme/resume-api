@@ -4,6 +4,6 @@ import (
 	"resume/controllers/campus"
 )
 
-func (router *Routers) Campus() {
+func (router *Routers) CampusGET() {
 	router.Protected.GET("/campus", campus.Get)
 }

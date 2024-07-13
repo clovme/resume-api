@@ -10,8 +10,8 @@ import (
 
 type BaseModel struct {
 	ID        string    `gorm:"primaryKey;type:char(32)" json:"id"`
-	CreatedAt time.Time `gorm:"autoCreateTime" json:"created_at"`
-	UpdatedAt time.Time `gorm:"autoUpdateTime" json:"updated_at"`
+	CreatedAt time.Time `gorm:"autoCreateTime" json:"createdAt"`
+	UpdatedAt time.Time `gorm:"autoUpdateTime" json:"updatedAt"`
 }
 
 func (base *BaseModel) BeforeCreate(tx *gorm.DB) (err error) {
