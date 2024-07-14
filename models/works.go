@@ -9,5 +9,5 @@ type Works struct {
 	Title   string `json:"title"`                    // 公司职位
 	Content string `gorm:"type:text" json:"content"` // 工作内容
 	ToNow   bool   `json:"toNow"`                    // 至今
-	Sort    uint   `json:"sort"`                     // 排序
+	Sort    int    `json:"sort"`                     // 排序
 }

@@ -15,7 +15,15 @@ func AuthMiddleware() gin.HandlerFunc {
 		s := libs.Context(c)
 		var user models.Users
 
-		token := strings.Replace(c.GetHeader("Authorization"), "Bearer ", "", 1)
+		authorization := c.GetHeader("Authorization")
+
+		if !strings.Contains(authorization, "Bearer") {
+			s.Msg(http.StatusUnauthorized, "登录授权过期或未登录!")
+			c.Abort()
+			return
+		}
+
+		token := strings.Replace(authorization, "Bearer ", "", 1)
 		if err := s.First(&user, "token = ? AND expires_at >= ?", token, time.Now()).Error; err != nil {
 			s.Msg(http.StatusUnauthorized, "登录授权过期或未登录!")
 			c.Abort()

@@ -1,9 +1,7 @@
 package menus
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 	"log"
 	"net/http"
 	"resume/libs"
@@ -55,25 +53,5 @@ func EditName(c *gin.Context) {
 
 // Sort 排序
 func Sort(c *gin.Context) {
-	s := libs.Context(c)
-
-	var menus []models.Menus
-	if err := c.ShouldBind(&menus); err != nil {
-		log.Println("传入的菜单数据反序列化失败！")
-		s.Msg(http.StatusBadRequest, "排序失败，请重试！")
-		return
-	}
-
-	success := 0
-	libs.Transaction(s, func(tx *gorm.DB) {
-		for _, menu := range menus {
-			result := tx.Model(&menu).Where("id = ? AND uid = ? AND rid = ?", menu.ID, s.User.ID, s.Resume.ID).Update("sort", menu.Sort)
-			// 检查更新是否成功
-			if result.RowsAffected > 0 {
-				success++
-			}
-		}
-	})
-
-	s.Msg(http.StatusOK, fmt.Sprintf("排序完成%d/%d条!", success, len(menus)))
+	libs.Sort[models.Menus]("模块名称", c, models.Menus{})
 }
