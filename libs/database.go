@@ -46,7 +46,7 @@ func Transaction(s HttpStatus, callback func(tx *gorm.DB)) {
 func Update[T any](msg string, models []T, s HttpStatus, Model func(model *T) *gorm.DB) {
 	status := true
 	for _, model := range models {
-		if result := Model(&model).Where("rid != ? AND uid != ?", enums.Vx32, enums.Vx32).Omit("id", "rid", "uid", "sort", "CreatedAt").Updates(model); result.Error != nil {
+		if result := Model(&model).Select("*").Where("rid != ? AND uid != ?", enums.Vx32, enums.Vx32).Omit("id", "rid", "uid", "sort", "CreatedAt").Updates(model); result.Error != nil {
 			log.Println(fmt.Sprintf("%s数据查询异常:", msg), result.Error)
 			status = false
 		}
