@@ -65,21 +65,25 @@ func Update[T any](msg string, models []T, s HttpStatus, Model func(model *T) *g
 // @param emptyModel 查询空模型
 // @param query 查询条件
 // @param args 查询参数
-func Create[T any](s HttpStatus, msg string, model *T, emptyModel T, query string, args ...interface{}) bool {
-	if err := s.Where(query, args...).First(&emptyModel).Error; err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
+func Create[T any](s HttpStatus, msg string, model *T, emptyModel T, query string, args ...interface{}) {
+	if result := s.Where(query, args...).First(&emptyModel); result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 			// 数据不存在，插入新记录
 			if err := s.Create(&model).Error; err != nil {
 				log.Println(fmt.Sprintf("%s创建失败:", msg), err)
+				s.Msg(http.StatusBadRequest, "数据保存失败，请重试！")
+				return
 			} else {
 				log.Println(fmt.Sprintf("%s创建成功:", msg), model)
-				return true
+				s.Json(http.StatusOK, "数据保存成功！", model)
+				return
 			}
 		} else {
-			log.Println(fmt.Sprintf("%s查询失败:", msg), err)
+			log.Println(fmt.Sprintf("%s查询失败:", msg), result.Error)
 		}
+	} else if result.RowsAffected > 0 {
+		s.Msg(http.StatusBadRequest, "数据已存在！")
 	}
-	return false
 }
 
 // SwitchTagsStatus 改变标签状态

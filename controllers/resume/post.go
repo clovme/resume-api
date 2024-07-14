@@ -140,6 +140,13 @@ func Post(c *gin.Context) {
 			m.UID = s.User.ID
 			return resume.Name, tx.Where("rid = ? AND uid = ?", resume.ID, s.User.ID)
 		})
+
+		// 15 复制课程成绩模板
+		status = CopyData[models.CourseGrade]("复制课程成绩模板", tx, []models.CourseGrade{}, func(m *models.CourseGrade) (string, *gorm.DB) {
+			m.RID = resume.ID
+			m.UID = s.User.ID
+			return resume.Name, tx.Where("rid = ? AND uid = ?", resume.ID, s.User.ID)
+		})
 	})
 	if status {
 		s.Json(http.StatusOK, "简历创建成功！", resume)
