@@ -43,10 +43,10 @@ func Transaction(s HttpStatus, callback func(tx *gorm.DB)) {
 // @param Model 回调函数
 // @param Model index 数据模型item索引
 // @param Model model 数据模型item数据
-func Update[T any](msg string, models []T, s HttpStatus, Model func(index int, model *T) *gorm.DB) {
+func Update[T any](msg string, models []T, s HttpStatus, Model func(model *T) *gorm.DB) {
 	status := true
-	for index, model := range models {
-		if result := Model(index, &model).Where("rid != ? AND uid != ?", enums.Vx32, enums.Vx32).Omit("id", "rid", "uid", "sort", "CreatedAt").Updates(model); result.Error != nil {
+	for _, model := range models {
+		if result := Model(&model).Where("rid != ? AND uid != ?", enums.Vx32, enums.Vx32).Omit("id", "rid", "uid", "sort", "CreatedAt").Updates(model); result.Error != nil {
 			log.Println(fmt.Sprintf("%s数据查询异常:", msg), result.Error)
 			status = false
 		}
@@ -86,8 +86,8 @@ func Create[T any](s HttpStatus, msg string, model *T, emptyModel T, query strin
 // @param db 数据库连接对象
 // @param resume 简历ID和uid
 // @param tagsName 选中的标签
-func SwitchTagsStatus(db *gorm.DB, resume models.Resumes, tagsName []string) {
-	where := db.Model(&models.Tags{}).Where("uid = ? AND rid = ? AND type = ?", resume.UID, resume.ID, enums.Skills)
+func SwitchTagsStatus(db *gorm.DB, resume models.Resumes, tagsName []string, tagsType enums.Tags) {
+	where := db.Model(&models.Tags{}).Where("uid = ? AND rid = ? AND type = ?", resume.UID, resume.ID, tagsType)
 	where.Update("is_checked", false)
 	where.Where("name in ?", tagsName).Update("is_checked", true)
 }

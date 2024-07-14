@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"resume/libs"
 	"resume/models"
+	"resume/types/enums"
 )
 
 func Put(c *gin.Context) {
@@ -20,10 +21,10 @@ func Put(c *gin.Context) {
 		return
 	}
 
-	libs.Update[models.Skills]("技能特长", skillsList, s, func(_ int, model *models.Skills) *gorm.DB {
+	libs.Update[models.Skills]("技能特长", skillsList, s, func(model *models.Skills) *gorm.DB {
 		model.UID = s.User.ID
 		model.RID = s.Resume.ID
-		libs.SwitchTagsStatus(s.DB, s.Resume, model.TagsName)
+		libs.SwitchTagsStatus(s.DB, s.Resume, model.TagsName, enums.Skills)
 		return s.Model(&models.Skills{}).Where("id = ? AND rid = ? AND uid = ?", model.ID, s.Resume.ID, s.User.ID)
 	})
 }

@@ -18,13 +18,10 @@ func Put(c *gin.Context) {
 		s.Msg(http.StatusBadRequest, "数据保存失败，请重试！")
 		return
 	}
-	libs.Transaction(s, func(tx *gorm.DB) {
-		libs.Update[models.Works]("工作经历", works, s, func(index int, model *models.Works) *gorm.DB {
-			model.UID = s.User.ID
-			model.RID = s.Resume.ID
-			model.Sort = index
-			return tx.Model(&models.Works{}).Where("id = ? AND rid = ? AND uid = ?", model.ID, s.Resume.ID, s.User.ID)
-		})
+	libs.Update[models.Works]("工作经历", works, s, func(model *models.Works) *gorm.DB {
+		model.UID = s.User.ID
+		model.RID = s.Resume.ID
+		return s.Model(&models.Works{}).Where("id = ? AND rid = ? AND uid = ?", model.ID, s.Resume.ID, s.User.ID)
 	})
 }
 

@@ -10,5 +10,5 @@ type Education struct {
 	Content string `gorm:"type:text" json:"content"` // 工作内容
 	ToNow   bool   `json:"toNow"`                    // 至今
 	Degree  string `json:"degree"`                   // 学历
-	Sort    uint   `json:"sort"`                     // 排序
+	Sort    int    `json:"sort"`                     // 排序
 }

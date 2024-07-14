@@ -7,3 +7,7 @@ import (
 func (router *Routers) HonorsGET() {
 	router.Protected.GET("/honors", honors.Get)
 }
+
+func (router *Routers) HonorsPUT() {
+	router.Protected.PUT("/honors", honors.Put)
+}

@@ -20,7 +20,7 @@ func Put(c *gin.Context) {
 		return
 	}
 
-	libs.Update[models.Basicinfo]("基础信息", basicList, s, func(_ int, model *models.Basicinfo) (ModelWhere *gorm.DB) {
+	libs.Update[models.Basicinfo]("基础信息", basicList, s, func(model *models.Basicinfo) *gorm.DB {
 		model.UID = s.User.ID
 		model.RID = s.Resume.ID
 		return s.Model(&models.Basicinfo{}).Where("id = ? AND uid = ? AND rid = ?", model.ID, s.User.ID, s.Resume.ID)
