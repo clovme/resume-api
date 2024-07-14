@@ -41,14 +41,21 @@ func Post(c *gin.Context) {
 			return
 		}
 
-		// 复制菜单模板
+		// 01 复制菜单模板
 		status = CopyData[models.Menus]("复制菜单模板", tx, []models.Menus{}, func(m *models.Menus) (string, *gorm.DB) {
 			m.RID = resume.ID
 			m.UID = s.User.ID
 			return resume.Name, tx.Where("rid = ? AND uid = ? AND title = ?", resume.ID, s.User.ID, m.Title)
 		})
 
-		// 复制基础信息模板
+		// 02 复制标签模板
+		status = CopyData[models.Tags]("复制标签模板", tx, []models.Tags{}, func(m *models.Tags) (string, *gorm.DB) {
+			m.RID = resume.ID
+			m.UID = s.User.ID
+			return resume.Name, tx.Where("rid = ? AND uid = ? AND name = ?", resume.ID, s.User.ID, m.Name)
+		})
+
+		// 03 复制基础信息模板
 		status = CopyData[models.Basicinfo]("复制基础信息模板", tx, []models.Basicinfo{}, func(m *models.Basicinfo) (string, *gorm.DB) {
 			m.RID = resume.ID
 			m.UID = s.User.ID
@@ -57,22 +64,78 @@ func Post(c *gin.Context) {
 			return resume.Name, tx.Where("rid = ? AND uid = ?", resume.ID, s.User.ID)
 		})
 
-		// 复制技能特长模板
+		// 04 复制技能特长模板
 		status = CopyData[models.Skills]("复制技能特长模板", tx, []models.Skills{}, func(m *models.Skills) (string, *gorm.DB) {
+			m.RID = resume.ID
+			m.UID = s.User.ID
+			return resume.Name, tx.Where("uid = ? AND rid = ?", resume.UID, resume.ID)
+		})
+
+		// 05 复制工作经历模板
+		status = CopyData[models.Works]("复制工作经历模板", tx, []models.Works{}, func(m *models.Works) (string, *gorm.DB) {
 			m.RID = resume.ID
 			m.UID = s.User.ID
 			return resume.Name, tx.Where("rid = ? AND uid = ?", resume.ID, s.User.ID)
 		})
 
-		// 复制标签模板
-		status = CopyData[models.Tags]("复制标签模板", tx, []models.Tags{}, func(m *models.Tags) (string, *gorm.DB) {
+		// 06 复制项目经验模板
+		status = CopyData[models.Project]("复制项目经验模板", tx, []models.Project{}, func(m *models.Project) (string, *gorm.DB) {
 			m.RID = resume.ID
 			m.UID = s.User.ID
-			return resume.Name, tx.Where("rid = ? AND uid = ? AND name = ?", resume.ID, s.User.ID, m.Name)
+			return resume.Name, tx.Where("rid = ? AND uid = ?", resume.ID, s.User.ID)
 		})
 
-		// 复制工作经历模板
-		status = CopyData[models.Works]("复制工作经历模板", tx, []models.Works{}, func(m *models.Works) (string, *gorm.DB) {
+		// 07 复制教育经历模板
+		status = CopyData[models.Education]("复制教育经历模板", tx, []models.Education{}, func(m *models.Education) (string, *gorm.DB) {
+			m.RID = resume.ID
+			m.UID = s.User.ID
+			return resume.Name, tx.Where("rid = ? AND uid = ?", resume.ID, s.User.ID)
+		})
+
+		// 08 复制自我评价模板
+		status = CopyData[models.Evaluation]("复制自我评价模板", tx, []models.Evaluation{}, func(m *models.Evaluation) (string, *gorm.DB) {
+			m.RID = resume.ID
+			m.UID = s.User.ID
+			return resume.Name, tx.Where("rid = ? AND uid = ?", resume.ID, s.User.ID)
+		})
+
+		// 09 复制实习经验模板
+		status = CopyData[models.Internship]("复制实习经验模板", tx, []models.Internship{}, func(m *models.Internship) (string, *gorm.DB) {
+			m.RID = resume.ID
+			m.UID = s.User.ID
+			return resume.Name, tx.Where("rid = ? AND uid = ?", resume.ID, s.User.ID)
+		})
+
+		// 10 复制报考信息模板
+		status = CopyData[models.ApplicationInfo]("复制报考信息模板", tx, []models.ApplicationInfo{}, func(m *models.ApplicationInfo) (string, *gorm.DB) {
+			m.RID = resume.ID
+			m.UID = s.User.ID
+			return resume.Name, tx.Where("rid = ? AND uid = ?", resume.ID, s.User.ID)
+		})
+
+		// 11 复制校园经历模板
+		status = CopyData[models.Campus]("复制校园经历模板", tx, []models.Campus{}, func(m *models.Campus) (string, *gorm.DB) {
+			m.RID = resume.ID
+			m.UID = s.User.ID
+			return resume.Name, tx.Where("rid = ? AND uid = ?", resume.ID, s.User.ID)
+		})
+
+		// 12 复制荣誉证书模板
+		status = CopyData[models.Honors]("复制荣誉证书模板", tx, []models.Honors{}, func(m *models.Honors) (string, *gorm.DB) {
+			m.RID = resume.ID
+			m.UID = s.User.ID
+			return resume.Name, tx.Where("rid = ? AND uid = ?", resume.ID, s.User.ID)
+		})
+
+		// 13 复制兴趣爱好模板
+		status = CopyData[models.Hobbies]("复制兴趣爱好模板", tx, []models.Hobbies{}, func(m *models.Hobbies) (string, *gorm.DB) {
+			m.RID = resume.ID
+			m.UID = s.User.ID
+			return resume.Name, tx.Where("rid = ? AND uid = ?", resume.ID, s.User.ID)
+		})
+
+		// 14 复制求职意向模板
+		status = CopyData[models.Intentions]("复制求职意向模板", tx, []models.Intentions{}, func(m *models.Intentions) (string, *gorm.DB) {
 			m.RID = resume.ID
 			m.UID = s.User.ID
 			return resume.Name, tx.Where("rid = ? AND uid = ?", resume.ID, s.User.ID)

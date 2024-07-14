@@ -3,11 +3,8 @@ package libs
 import (
 	"crypto/md5"
 	"encoding/hex"
-	"fmt"
 	"gopkg.in/ini.v1"
-	"gorm.io/gorm"
 	"log"
-	"net/http"
 	"os"
 )
 
@@ -49,16 +46,4 @@ func MD5(str string) string {
 
 	// 将哈希值转换为十六进制字符串
 	return hex.EncodeToString(hash[:])
-}
-
-func DeleteData(s HttpStatus, msg string, result *gorm.DB) bool {
-	// 检查删除操作是否成功
-	if result.Error != nil {
-		s.Msg(http.StatusForbidden, fmt.Sprintf("%s删除失败！", msg))
-		return false
-	} else if result.RowsAffected == 0 {
-		s.Msg(http.StatusForbidden, fmt.Sprintf("%s没有找到符合条件的数据！", msg))
-		return false
-	}
-	return true
 }

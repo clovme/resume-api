@@ -26,14 +26,14 @@ func CopyData[T any](msg string, tx *gorm.DB, models []T, setValues func(m *T) (
 				// 数据不存在，插入新记录
 				if err := tx.Create(&model).Error; err != nil {
 					tx.Rollback()
-					log.Println(fmt.Sprintf("[%s]创建失败:", RName), err)
+					log.Println(fmt.Sprintf("简历名称[%s]->[%s]复制失败:", RName, msg), err)
 					flag = false
 				} else {
-					log.Println(fmt.Sprintf("[%s]创建创建成功！", RName), model)
+					log.Println(fmt.Sprintf("简历名称[%s]->[%s]复制创建成功！", RName, msg))
 				}
 			} else {
 				tx.Rollback()
-				log.Println(fmt.Sprintf("[%s]查询失败:", RName), err.Error())
+				log.Println(fmt.Sprintf("简历名称[%s]->[%s]查询失败:", RName, msg), err.Error())
 				flag = false
 			}
 		}

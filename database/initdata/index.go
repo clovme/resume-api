@@ -21,12 +21,12 @@ func insertRecord[T any](msg string, modelList []T, DbWhere func(model T) (db, w
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				// 数据不存在，插入新记录
 				if err := db.Create(&model).Error; err != nil {
-					log.Println(fmt.Sprintf("[初始化数据] %s创建失败:", msg), err)
+					log.Println(fmt.Sprintf("[%s]初始化失败:", msg), err)
 				} else {
-					log.Println(fmt.Sprintf("[初始化数据] %s创建成功:", msg), model)
+					log.Println(fmt.Sprintf("[%s]初始化成功！", msg))
 				}
 			} else {
-				log.Println(fmt.Sprintf("[初始化数据] %s查询失败:", msg), err)
+				log.Println(fmt.Sprintf("[%s]查询失败:", msg), err)
 			}
 		}
 	}

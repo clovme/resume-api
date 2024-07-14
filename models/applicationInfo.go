@@ -1,5 +1,6 @@
 package models
 
+// ApplicationInfo 报考信息
 type ApplicationInfo struct {
 	BaseModelWithRIDUID
 	Name        string        `json:"name"`                // 学校名称

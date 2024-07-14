@@ -115,3 +115,29 @@ func Sort[T any](msg string, c *gin.Context, model T) {
 
 	s.Msg(http.StatusOK, fmt.Sprintf("排序完成%d/%d条!", success, len(ids)))
 }
+
+// DeleteData 删除数据返回状态
+// @param s HttpStatus
+// @param msg 消息状态
+// @param result ORM操作结果
+func DeleteData[T any](s HttpStatus, tx *gorm.DB, msg string, model T, query string, args ...interface{}) bool {
+	// 检查删除操作是否成功
+	if result := tx.Where(query, args...).Delete(&model); result.Error != nil {
+		s.Msg(http.StatusForbidden, fmt.Sprintf("%s删除失败！", msg))
+		return false
+	} else if result.RowsAffected == 0 {
+		s.Msg(http.StatusForbidden, fmt.Sprintf("%s没有找到符合条件的数据！", msg))
+		return false
+	}
+	return true
+}
+
+func QueryDataBaseArray[T any](c *gin.Context, models []T) {
+	s := Context(c)
+
+	if err := s.Order("sort asc").Find(&models, "rid = ? AND uid = ?", s.Resume.ID, s.User.ID).Error; err != nil {
+		s.Msg(http.StatusNotFound, "没有查询到数据！")
+		return
+	}
+	s.Json(http.StatusOK, "数据查询成功", models)
+}
