@@ -32,6 +32,8 @@ func AutoMigrate(dbn gorm.Dialector) *gorm.DB {
 		&models.Campus{},
 		&models.ApplicationInfo{},
 		&models.CourseGrade{},
+		&models.Slogan{},
+		&models.Setting{},
 	)
 
 	if err != nil {

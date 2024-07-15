@@ -147,6 +147,20 @@ func Post(c *gin.Context) {
 			m.UID = s.User.ID
 			return resume.Name, tx.Where("rid = ? AND uid = ?", resume.ID, s.User.ID)
 		})
+
+		// 16 复制简历标题模板
+		status = CopyData[models.Slogan]("复制简历标题模板", tx, []models.Slogan{}, func(m *models.Slogan) (string, *gorm.DB) {
+			m.RID = resume.ID
+			m.UID = s.User.ID
+			return resume.Name, tx.Where("rid = ? AND uid = ?", resume.ID, s.User.ID)
+		})
+
+		// 17 复制简历标题模板
+		status = CopyData[models.Setting]("复制简历设置模板", tx, []models.Setting{}, func(m *models.Setting) (string, *gorm.DB) {
+			m.RID = resume.ID
+			m.UID = s.User.ID
+			return resume.Name, tx.Where("rid = ? AND uid = ?", resume.ID, s.User.ID)
+		})
 	})
 	if status {
 		s.Json(http.StatusOK, "简历创建成功！", resume)

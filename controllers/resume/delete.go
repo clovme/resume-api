@@ -47,6 +47,8 @@ func Delete(c *gin.Context) {
 		modelList = append(modelList, types.ModelItem{Name: "兴趣爱好", Model: models.Hobbies{}})
 		modelList = append(modelList, types.ModelItem{Name: "求职意向", Model: models.Intentions{}})
 		modelList = append(modelList, types.ModelItem{Name: "课程成绩", Model: models.CourseGrade{}})
+		modelList = append(modelList, types.ModelItem{Name: "简历标题", Model: models.Slogan{}})
+		modelList = append(modelList, types.ModelItem{Name: "简历设置", Model: models.Setting{}})
 
 		for _, model := range modelList {
 			if !libs.DeleteData(s, tx, model.Name, model.Model, "uid = ? AND rid = ?", resume.UID, resume.ID) {

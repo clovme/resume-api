@@ -13,5 +13,5 @@ func (router *Routers) UsersPOST() {
 }
 
 func (router *Routers) UsersDELETE() {
-	router.Protected.DELETE("/logout", users.SignOut)
+	router.Public.DELETE("/logout", users.SignOut)
 }
