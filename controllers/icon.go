@@ -9,7 +9,7 @@ import (
 
 func GetIcon(c *gin.Context) {
 	// 打开文件，以只读方式打开
-	file, err := os.Open("D:\\develop\\vue\\PersonalResume\\src\\styles\\webfont\\variables.scss")
+	file, err := os.Open("D:\\develop\\vue\\resume-web\\src\\styles\\webfont\\variables.scss")
 	if err != nil {
 		fmt.Printf("Failed to open file: %v\n", err)
 		return

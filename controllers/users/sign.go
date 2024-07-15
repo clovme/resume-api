@@ -36,3 +36,14 @@ func SignIn(c *gin.Context) {
 
 	s.Json(http.StatusOK, "登录成功", user)
 }
+
+func SignOut(c *gin.Context) {
+	s := libs.Context(c)
+
+	if result := s.Model(&models.Users{}).Where("id = ? AND token = ?", s.User.ID, s.User.Token).Update("expires_at", time.Now()); result.Error != nil {
+		log.Println("用户名称更新失败！", result.Error)
+		s.Msg(http.StatusBadRequest, "注销失败！")
+		return
+	}
+	s.Msg(http.StatusOK, "注销成功！")
+}

@@ -11,5 +11,5 @@ type Users struct {
 	Username  string    `gorm:"not null" json:"username"`     // 用户名
 	Password  string    `gorm:"not null" json:"-"`            // 密码
 	Token     string    `gorm:"unique;not null" json:"token"` // Token
-	ExpiresAt time.Time `json:"expires_at"`                   // 过期时间
+	ExpiresAt time.Time `json:"expiresAt"`                    // 过期时间
 }
