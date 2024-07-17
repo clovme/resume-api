@@ -21,7 +21,7 @@ type Routers struct {
 // @params router web 路由
 // @params db 数据库连接信息
 // @params static embed.FS
-func Initialization(router *gin.Engine, db *gorm.DB, static embed.FS) {
+func Initialization(router *gin.Engine, db *gorm.DB, static *embed.FS) {
 	// 设置为信任所有代理
 	err := router.SetTrustedProxies(nil)
 	if err != nil {
@@ -29,7 +29,7 @@ func Initialization(router *gin.Engine, db *gorm.DB, static embed.FS) {
 	}
 
 	// 使用数据库中间件
-	router.Use(middleware.DBMiddleware(db))
+	router.Use(middleware.DBMiddleware(db, static))
 	router.Use(middleware.CorsMiddleware())
 	router.Use(middleware.NotFoundHandler())
 

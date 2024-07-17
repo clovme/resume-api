@@ -38,7 +38,7 @@ func main() {
 
 	router := gin.Default()
 	// 视图路由配置
-	routers.Initialization(router, db, static)
+	routers.Initialization(router, db, &static)
 
 	host := cfg.Section("server").Key("host").String()
 	port := cfg.Section("server").Key("port").String()

@@ -39,7 +39,7 @@ func AuthMiddleware() gin.HandlerFunc {
 			}
 		}
 
-		c.Set("$", libs.HttpStatus{DB: s.DB, Context: c, User: user, Resume: resume})
+		c.Set("$", libs.HttpStatus{DB: s.DB, Context: c, User: user, Resume: resume, Embed: s.Embed})
 		c.Next()
 	}
 }

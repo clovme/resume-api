@@ -1,6 +1,7 @@
 package libs
 
 import (
+	"embed"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"net/http"
@@ -12,6 +13,7 @@ type HttpStatus struct {
 	*gin.Context `json:"-"`
 	User         models.Users   `json:"-"`
 	Resume       models.Resumes `json:"-"`
+	Embed        *embed.FS      `json:"-"`
 	Code         int            `json:"code"`
 	Message      string         `json:"message"`
 	Data         interface{}    `json:"data"`
