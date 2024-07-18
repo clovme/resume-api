@@ -24,7 +24,7 @@ func HTMLContent(styleByte []byte, title, body string) []byte {
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>` + title + `</title>
+    <title>` + title + `的简历</title>
     <style>` + style + `</style>
 </head>
 <body>` + body + `</body>
