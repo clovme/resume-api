@@ -41,6 +41,9 @@ func Initialization(router *gin.Engine, db *gorm.DB, static *embed.FS) {
 	staticFS, _ := fs.Sub(static, "public/assets")
 	router.StaticFS("/assets", http.FS(staticFS))
 
+	// 配置静态文件目录
+	router.Static("/temp", "./data/temp/")
+
 	public := router.Group("/api")
 	protected := router.Group("/api")
 	protected.Use(middleware.AuthMiddleware())

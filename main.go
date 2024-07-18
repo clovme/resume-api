@@ -20,6 +20,7 @@ func main() {
 	var dsn gorm.Dialector
 
 	libs.CreateDir("data")
+	libs.CreateDir("data/temp")
 
 	// 读取 INI 文件
 	cfg, err := ini.Load("data/config.ini")
