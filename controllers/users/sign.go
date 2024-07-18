@@ -47,3 +47,43 @@ func SignOut(c *gin.Context) {
 	}
 	s.Msg(http.StatusOK, "注销成功！")
 }
+
+func Regedit(c *gin.Context) {
+	s := libs.Context(c)
+
+	var fUser FUsers
+	if err := c.ShouldBind(&fUser); err != nil {
+		log.Println("用户注册->参数反序列化失败！")
+		s.Msg(http.StatusBadRequest, "注册失败，请重试！")
+		return
+	}
+
+	if fUser.Password != fUser.ConfirmPassword {
+		s.Msg(http.StatusBadRequest, "两次输入密码不一致，请重试！")
+		return
+	}
+
+	if result := s.Find(&models.Users{}, "username = ?", fUser.Username); result.Error != nil {
+		log.Println("用户注册->用户查询:", result.Error)
+		s.Msg(http.StatusBadRequest, "系统错误，请重试！")
+		return
+	} else if result.RowsAffected > 0 {
+		s.Msg(http.StatusBadRequest, "用户名已存在，请重试！")
+		return
+	}
+
+	user := models.Users{
+		Nickname:  "个人简历",
+		Username:  fUser.Username,
+		Password:  libs.MD5(fUser.Password),
+		Token:     libs.MD5(uuid.New().String()),
+		ExpiresAt: time.Now().Add(24 * time.Hour),
+	}
+
+	if result := s.Create(&user); result.Error != nil {
+		log.Println("用户注册->数据创建失败:", result.Error)
+		s.Msg(http.StatusBadRequest, "注册失败，请重试！")
+		return
+	}
+	s.Json(http.StatusOK, "注册成功，请重试！", user)
+}

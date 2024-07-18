@@ -10,6 +10,7 @@ func (router *Routers) UsersPUT() {
 
 func (router *Routers) UsersPOST() {
 	router.Public.POST("/login", users.SignIn)
+	router.Public.POST("/regedit", users.Regedit)
 }
 
 func (router *Routers) UsersDELETE() {

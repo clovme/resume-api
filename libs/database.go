@@ -129,9 +129,6 @@ func DeleteData[T any](s HttpStatus, tx *gorm.DB, msg string, model T, query str
 	if result := tx.Where(query, args...).Delete(&model); result.Error != nil {
 		s.Msg(http.StatusForbidden, fmt.Sprintf("%s删除失败！", msg))
 		return false
-	} else if result.RowsAffected == 0 {
-		s.Msg(http.StatusForbidden, fmt.Sprintf("%s没有找到符合条件的数据！", msg))
-		return false
 	}
 	return true
 }

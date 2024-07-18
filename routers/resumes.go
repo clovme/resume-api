@@ -16,6 +16,7 @@ func (router *Routers) ResumesPUT() {
 
 func (router *Routers) ResumesPOST() {
 	router.Protected.POST("/resumes", resume.Post)
+	router.Protected.POST("/resumes/copy", resume.Copy)
 }
 
 func (router *Routers) ResumesDELETE() {
