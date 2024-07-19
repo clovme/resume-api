@@ -23,3 +23,5 @@ go version go1.22.2 windows/amd64
     ```sh
     go build -ldflags="-H windowsgui" -o myprogram.exe main.go
     ```
+
+web页面 [https://github.com/clovme/resume-web.git](https://github.com/clovme/resume-web.git)
