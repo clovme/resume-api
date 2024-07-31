@@ -53,8 +53,8 @@ func Html2PDF(c *gin.Context) {
 	// 捕获 PDF
 	var buf []byte
 	if err := chromedp.Run(ctx, libs.Base64ToPDF(&buf, indexStyle, s.Resume.Name, request.HTMLContent)); err != nil {
-		log.Println("Html2PDF 生成 PDF 文档失败：", err.Error())
-		s.Msg(http.StatusInternalServerError, "PDF 文档生成失败，请重试！")
+		log.Println("Html2PDF 生成 PDF 文档失败，可能缺少Google浏览器，请下载Google浏览器，错误信息：", err.Error())
+		s.Msg(http.StatusInternalServerError, "Html2PDF 生成 PDF 文档失败，可能缺少Google浏览器，请下载Google浏览器，请重试！")
 		return
 	}
 
