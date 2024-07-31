@@ -19,6 +19,18 @@ import (
 //go:embed public/*
 var static embed.FS
 
+func init() {
+	libs.CheckChrome()
+
+	// 旧的 PATH 环境变量
+	oldPath := os.Getenv("PATH")
+
+	// 追加路径到 PATH 环境变量
+	newPath := fmt.Sprintf("%s;%s", oldPath, fmt.Sprintf("%s\\chrome", os.TempDir()))
+
+	_ = os.Setenv("PATH", newPath)
+}
+
 func main() {
 	var dsn gorm.Dialector
 
