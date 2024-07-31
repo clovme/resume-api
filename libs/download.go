@@ -88,7 +88,6 @@ func saveFile(url string, dest string) (int64, error) {
 		return 0, err
 	}
 
-	fmt.Println("\n下载完成")
 	return size, nil
 }
 
@@ -142,13 +141,16 @@ func DownloadFile(url, dest string) error {
 		}
 	}
 
-	fmt.Println(fmt.Sprintf("下载位置: %s", dest))
+	fmt.Println(fmt.Sprintf("Chrome 下载位置: %s", dest))
 	// 下载文件
 	_, err = saveFile(url, dest)
 	if err != nil {
 		fmt.Println("Error:", err)
 		return err
 	}
+
+	fmt.Println("\n下载完成，解压中...")
+
 	_ = Unzip(dest, chromePath)
 
 	_ = os.Remove(dest)
