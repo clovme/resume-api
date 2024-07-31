@@ -45,12 +45,18 @@ func main() {
 	cfg, err := ini.Load("data/config.ini")
 	if err != nil {
 		cfg = ini.Empty()
+		log.Println("读取 INI 配置文件打开失败，使用默认配置，错误信息：", err)
+	}
+
+	if cfg.HasSection("mysql") {
+		dsn = database.OpenMySQLDB(cfg)
+	} else {
+		dsn = sqlite.Open("data/resume.db")
+	}
+
+	if !cfg.HasSection("server") {
 		cfg.Section("server").Key("host").SetValue("127.0.0.1")
 		cfg.Section("server").Key("port").SetValue("8080")
-		dsn = sqlite.Open("data/resume.db")
-		log.Println("读取 INI 配置文件打开失败，使用默认配置，错误信息：", err)
-	} else {
-		dsn = database.OpenMySQLDB(cfg)
 	}
 
 	// 初始化数据库
