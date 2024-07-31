@@ -1,4 +1,5 @@
 # resume
+
 个人简历API接口
 
 go version go1.22.2 windows/amd64
@@ -20,8 +21,12 @@ go version go1.22.2 windows/amd64
     ```
 
 5. **编译Go程序并链接资源文件**：
-    ```sh
-    go build -ldflags="-H windowsgui" -o myprogram.exe main.go
-    ```
+   ```sh
+   // 带控制台
+   go build -o PersonalResume.exe
+   
+   // 不带控制台
+   go build -ldflags="-H windowsgui" -o PersonalResume.exe
+   ```
 
 web页面 [https://github.com/clovme/resume-web.git](https://github.com/clovme/resume-web.git)
