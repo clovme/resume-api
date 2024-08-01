@@ -77,7 +77,8 @@ func main() {
 
 	mode := cfg.Section("server").Key("mode").String()
 
-	log.Println("GIN Server Mode:", mode)
+	log.Println("日志级别：debug/release/test")
+	log.Println("GIN 日志级别:", mode)
 	gin.SetMode(mode)
 	router := gin.Default()
 	// 视图路由配置
