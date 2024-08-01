@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"github.com/chromedp/chromedp"
 	"io"
+	"log"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -101,7 +102,7 @@ func DownloadFile(url, dest string) error {
 	// 检查文件是否已经存在并且大小一致
 	fileExists, err := fileExists(dest)
 	if err != nil {
-		fmt.Println("Error:", err)
+		log.Println("检查文件是否已经存在并且大小一致，错误信息:", err)
 		return err
 	}
 
@@ -109,27 +110,27 @@ func DownloadFile(url, dest string) error {
 		// 获取已下载文件的大小
 		downloadedSize, err := getFileSize(dest)
 		if err != nil {
-			fmt.Println("Error:", err)
+			log.Println("获取已下载文件的大小失败，错误信息:", err)
 			return err
 		}
 
 		// 创建HTTP请求获取文件大小
 		resp, err := http.Head(url)
 		if err != nil {
-			fmt.Println("Error:", err)
+			log.Println("创建HTTP请求获取文件大小失败，错误信息:", err)
 			return err
 		}
 		defer resp.Body.Close()
 
 		if resp.StatusCode != http.StatusOK {
-			fmt.Printf("Bad status: %s\n", resp.Status)
+			log.Println("获取下载请求，响应码:", resp.Status)
 			return nil
 		}
 
 		// 获取远程文件大小
 		expectedSize, err := strconv.ParseInt(resp.Header.Get("Content-Length"), 10, 64)
 		if err != nil {
-			fmt.Println("Error:", err)
+			log.Println("获取远程文件大小失败，错误信息:", err)
 			return err
 		}
 
@@ -145,7 +146,7 @@ func DownloadFile(url, dest string) error {
 	// 下载文件
 	_, err = saveFile(url, dest)
 	if err != nil {
-		fmt.Println("Error:", err)
+		log.Println("文件下载失败，错误信息:", err)
 		return err
 	}
 
@@ -220,7 +221,7 @@ func CheckChrome() {
 
 		err := DownloadFile(url, dest)
 		if err != nil {
-			fmt.Println(err)
+			log.Println("Chrome 浏览器下载失败，错误信息：", err)
 			return
 		}
 		return

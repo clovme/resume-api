@@ -69,11 +69,16 @@ func main() {
 	if !cfg.HasSection("server") {
 		cfg.Section("server").Key("host").SetValue("127.0.0.1")
 		cfg.Section("server").Key("port").SetValue("8080")
+		cfg.Section("server").Key("mode").SetValue("release")
 	}
 
 	// 初始化数据库
 	db := database.AutoMigrate(dsn)
 
+	mode := cfg.Section("server").Key("mode").String()
+
+	log.Println("GIN Server Mode:", mode)
+	gin.SetMode(mode)
 	router := gin.Default()
 	// 视图路由配置
 	routers.Initialization(router, db, &static)
