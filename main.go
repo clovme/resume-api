@@ -75,7 +75,7 @@ func main() {
 		}
 
 		fmt.Println("WEB 服务配置：")
-		setIniValue(cfg, "server", "host", "127.0.0.1", "WEB地址(127.0.0.1)")
+		setIniValue(cfg, "server", "host", "localhost", "WEB地址(localhost)")
 		setIniValue(cfg, "server", "port", "8080", "WEB端口(8080)")
 		setIniValue(cfg, "server", "mode", "release", "日志级别debug/release/test(release)")
 		fmt.Println("配置完成。")
