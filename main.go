@@ -96,7 +96,7 @@ func main() {
 	}
 
 	if !cfg.HasSection("server") {
-		cfg.Section("server").Key("host").SetValue("127.0.0.1")
+		cfg.Section("server").Key("host").SetValue("localhost")
 		cfg.Section("server").Key("port").SetValue("8080")
 		cfg.Section("server").Key("mode").SetValue("release")
 	}
