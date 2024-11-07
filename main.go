@@ -13,11 +13,30 @@ import (
 	"resume/database"
 	"resume/libs"
 	"resume/routers"
+	"resume/types/enums"
+	"runtime"
 	"strings"
 )
 
 //go:embed public/*
 var static embed.FS
+
+func init() {
+	fmt.Println("============================================================================")
+	fmt.Println(fmt.Sprintf("= 使用 %s init 初始化配置文件。", filepath.Base(os.Args[0])))
+	fmt.Println("============================================================================")
+
+	if runtime.GOOS == "windows" {
+		enums.ChromeExePath = fmt.Sprintf("%s.%s", enums.ChromeExePath, "exe")
+	}
+	if err := libs.DownloadChromeFile(static); err != nil {
+		log.Println("Chrome 浏览器下载失败，错误信息：", err)
+	} else {
+		log.Printf("Chrome 浏览器位置：%s。\n", enums.ChromeExePath)
+	}
+	log.Printf("数据文件夹，位置：%s。\n", filepath.Dir(enums.TempPath))
+	log.Printf("临时数据文件夹，位置：%s。\n", enums.TempPath)
+}
 
 func setIniValue(cfg *ini.File, section, key, defaultValue, tip string) {
 	name := input(tip)
@@ -36,10 +55,6 @@ func input(tip string) string {
 
 func main() {
 	libs.CreateDir("data/temp")
-
-	fmt.Println("============================================================================")
-	fmt.Println(fmt.Sprintf("= 使用 %s init 初始化配置文件。", filepath.Base(os.Args[0])))
-	fmt.Println("============================================================================")
 
 	// 读取 INI 文件
 	cfg, err := ini.Load("data/config.ini")

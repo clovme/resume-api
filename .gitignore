@@ -3,10 +3,11 @@
 #
 # Binaries for programs and plugins
 .idea
-*.exe
-*.exe~
-*.dll
-*.so
+/*.exe
+/*.exe~
+/*.dll
+/*.so
+/*.upx
 *.dylib
 
 # Test binary, built with `go test -c`

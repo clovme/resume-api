@@ -67,6 +67,7 @@ func Html2PDF(c *gin.Context) {
 		allocCtx.Done()
 		ctx.Done()
 		log.Println("Html2PDF 生成 PDF 文档失败：", err.Error())
+		log.Println(fmt.Sprintf("Html2PDF 生成 PDF 文档失败，可能缺少Google浏览器，请下载Google浏览器，%s", enums.ChromeUrl))
 		s.Msg(http.StatusInternalServerError, "PDF 文档生成失败，请重试！")
 		return
 	}

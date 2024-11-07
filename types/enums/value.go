@@ -4,11 +4,14 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"runtime"
 )
 
 var (
 	TempPath      = ""
-	ChromeExePath = "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"
+	ChromeExePath = filepath.Join(os.TempDir(), "chrome", "chrome")
+	ChromeZipPath = filepath.Join(os.TempDir(), "chrome.7z")
+	ChromeUrl     = "https://gitee.com/lovme/tool-kit/releases/download/tools/chrome-%s.7z"
 )
 
 const (
@@ -23,6 +26,7 @@ func init() {
 		return
 	}
 
+	ChromeUrl = fmt.Sprintf(ChromeUrl, runtime.GOOS)
 	// 获取文件所在的目录
 	TempPath = filepath.Join(filepath.Dir(execPath), "data", "temp")
 }
