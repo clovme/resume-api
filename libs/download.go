@@ -2,15 +2,13 @@ package libs
 
 import (
 	"archive/zip"
-	"context"
-	"encoding/base64"
 	"fmt"
-	"github.com/chromedp/chromedp"
 	"io"
 	"log"
 	"net/http"
 	"os"
 	"path/filepath"
+	"resume/types/enums"
 	"runtime"
 	"strconv"
 	"strings"
@@ -92,23 +90,25 @@ func saveFile(url string, dest string) (int64, error) {
 	return size, nil
 }
 
-func DownloadFile(url, dest string) error {
-	chromePath := fmt.Sprintf("%s\\chrome", os.TempDir())
+func DownloadChromeFile() error {
+	chromePath := filepath.Dir(enums.ChromeExePath)
 
 	if folderExists(chromePath) {
 		return nil
 	}
 
 	// 检查文件是否已经存在并且大小一致
-	fileExists, err := fileExists(dest)
+	fileExists, err := fileExists(enums.ChromeZipPath)
 	if err != nil {
 		log.Println("检查文件是否已经存在并且大小一致，错误信息:", err)
 		return err
 	}
 
+	url := fmt.Sprintf("https://github.com/clovme/resume-api/releases/download/v1.0/chrome-%s.zip", runtime.GOOS)
+
 	if fileExists {
 		// 获取已下载文件的大小
-		downloadedSize, err := getFileSize(dest)
+		downloadedSize, err := getFileSize(enums.ChromeZipPath)
 		if err != nil {
 			log.Println("获取已下载文件的大小失败，错误信息:", err)
 			return err
@@ -136,15 +136,15 @@ func DownloadFile(url, dest string) error {
 
 		if expectedSize == downloadedSize {
 			if !folderExists(chromePath) {
-				_ = Unzip(dest, chromePath)
+				_ = Unzip(enums.ChromeZipPath, chromePath)
 			}
 			return nil
 		}
 	}
 
-	fmt.Println(fmt.Sprintf("Chrome 下载位置: %s", dest))
+	fmt.Println(fmt.Sprintf("Chrome 下载位置: %s", enums.ChromeZipPath))
 	// 下载文件
-	_, err = saveFile(url, dest)
+	_, err = saveFile(url, enums.ChromeZipPath)
 	if err != nil {
 		log.Println("文件下载失败，错误信息:", err)
 		return err
@@ -152,9 +152,9 @@ func DownloadFile(url, dest string) error {
 
 	fmt.Println("\n下载完成，解压中...")
 
-	_ = Unzip(dest, chromePath)
+	_ = Unzip(enums.ChromeZipPath, chromePath)
 
-	_ = os.Remove(dest)
+	_ = os.Remove(enums.ChromeZipPath)
 
 	return nil
 }
@@ -201,29 +201,4 @@ func Unzip(src string, dest string) error {
 		fmt.Println(fpath)
 	}
 	return nil
-}
-
-func CheckChrome() {
-	// 创建上下文
-	ctx, cancel := chromedp.NewContext(context.Background())
-	defer cancel()
-
-	htmlContent := `<!DOCTYPE html><html lang="zh"><head><meta charset="UTF-8"><title>测试</title></head><body>测试</body></html>`
-
-	dataURL := fmt.Sprintf("data:text/html;base64,%s", base64.StdEncoding.EncodeToString([]byte(htmlContent)))
-
-	// 捕获 PDF
-	var buf []byte
-	if chromedp.Run(ctx, ToPDF(dataURL, &buf)) != nil {
-		dest := fmt.Sprintf("%s\\chrome.zip", os.TempDir())
-
-		url := fmt.Sprintf("https://github.com/clovme/resume-api/releases/download/v1.0/chrome-%s.zip", runtime.GOOS)
-
-		err := DownloadFile(url, dest)
-		if err != nil {
-			log.Println("Chrome 浏览器下载失败，错误信息：", err)
-			return
-		}
-		return
-	}
 }
