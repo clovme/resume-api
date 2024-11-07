@@ -9,7 +9,7 @@ import (
 
 var (
 	TempPath      = ""
-	ChromeExePath = filepath.Join(os.TempDir(), "chrome", "chrome")
+	ChromeExePath = filepath.Join(os.TempDir(), "Chrome", "chrome")
 	ChromeZipPath = filepath.Join(os.TempDir(), "chrome.7z")
 	ChromeUrl     = "https://gitee.com/lovme/tool-kit/releases/download/tools/chrome-%s.7z"
 )

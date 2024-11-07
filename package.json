@@ -1,9 +1,0 @@
-{
-  "name": "resume-api",
-  "private": true,
-  "version": "0.0.0",
-  "scripts": {
-    "bee run": "bee run",
-    "go build resume": "go build -ldflags \"-s -w\" -trimpath -o resume.exe"
-  }
-}
