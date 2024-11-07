@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"reflect"
 	"resume/middleware"
+	"resume/types/enums"
 )
 
 type Routers struct {
@@ -42,7 +43,7 @@ func Initialization(router *gin.Engine, db *gorm.DB, static *embed.FS) {
 	router.StaticFS("/assets", http.FS(staticFS))
 
 	// 配置静态文件目录
-	router.Static("/temp", "./data/temp/")
+	router.Static("/temp", enums.TempPath)
 
 	public := router.Group("/api")
 	protected := router.Group("/api")

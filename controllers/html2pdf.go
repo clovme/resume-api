@@ -8,8 +8,9 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
 	"resume/libs"
-	"runtime"
+	"resume/types/enums"
 	"strings"
 )
 
@@ -47,21 +48,32 @@ func Html2PDF(c *gin.Context) {
 		return
 	}
 
-	// 创建 chromedp 上下文
-	ctx, cancel := chromedp.NewContext(context.Background())
+	// 配置浏览器启动选项
+	opts := append(chromedp.DefaultExecAllocatorOptions[:],
+		chromedp.ExecPath(enums.ChromeExePath),
+	)
+
+	// 启动浏览器分配器
+	allocCtx, cancel := chromedp.NewExecAllocator(context.Background(), opts...)
+	defer cancel()
+
+	// 创建浏览器上下文
+	ctx, cancel := chromedp.NewContext(allocCtx)
 	defer cancel()
 
 	// 捕获 PDF
 	var buf []byte
-	if err := chromedp.Run(ctx, libs.Base64ToPDF(&buf, indexStyle, s.Resume.Name, request.HTMLContent)); err != nil {
-		log.Println(fmt.Sprintf("Html2PDF 生成 PDF 文档失败，可能缺少Google浏览器，请下载Google浏览器，https://github.com/clovme/resume-api/releases/download/v1.0/chrome-%s.zip", runtime.GOOS))
+	if err := chromedp.Run(ctx, libs.ToPDF(&buf, indexStyle, s.Resume.Name, request.HTMLContent)); err != nil {
+		allocCtx.Done()
+		ctx.Done()
+		log.Println("Html2PDF 生成 PDF 文档失败：", err.Error())
 		s.Msg(http.StatusInternalServerError, "PDF 文档生成失败，请重试！")
 		return
 	}
 
-	filepath := fmt.Sprintf("./data/temp/%s", s.User.ID)
+	_filePath := filepath.Join(enums.TempPath, s.User.ID)
 
-	err = os.WriteFile(filepath, buf, 0o644)
+	err = os.WriteFile(_filePath, buf, 0o644)
 	if err != nil {
 		log.Println("Html2PDF PDF 报存失败：", err.Error())
 		s.Msg(http.StatusInternalServerError, "PDF 文档生成失败，请重试！")
@@ -69,15 +81,15 @@ func Html2PDF(c *gin.Context) {
 	}
 
 	// 返回生成的 PDF
-	s.Json(http.StatusOK, s.Resume.Name+"的简历.pdf", strings.Replace(filepath, "./data", "", 1))
+	s.Json(http.StatusOK, s.Resume.Name+"的简历.pdf", strings.Replace(_filePath, filepath.Dir(enums.TempPath), "", 1))
 }
 
 func DeletePDF(c *gin.Context) {
 	s := libs.Context(c)
 
-	filepath := fmt.Sprintf("./data/temp/%s", s.User.ID)
-	if err := os.Remove(filepath); err != nil {
-		log.Println(fmt.Sprintf("%s 删除失败！", filepath), err.Error())
+	_filePath := filepath.Join(enums.TempPath, s.User.ID)
+	if err := os.Remove(_filePath); err != nil {
+		log.Println(fmt.Sprintf("%s 删除失败！", _filePath), err.Error())
 		s.Msg(http.StatusInternalServerError, "PDF 文档生成失败，请重试！")
 		return
 	}

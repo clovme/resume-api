@@ -32,13 +32,10 @@ func HTMLContent(styleByte []byte, title, body string) []byte {
 	return []byte(htmlContent)
 }
 
-func Base64ToPDF(res *[]byte, style []byte, title, body string) chromedp.Tasks {
-	dataURL := fmt.Sprintf("data:text/html;base64,%s", base64.StdEncoding.EncodeToString(HTMLContent(style, title, body)))
-	return ToPDF(dataURL, res)
-}
-
 // ToPDF 将指定 HTML 转换为 PDF
-func ToPDF(dataURL string, res *[]byte) chromedp.Tasks {
+func ToPDF(res *[]byte, style []byte, title, body string) chromedp.Tasks {
+	dataURL := fmt.Sprintf("data:text/html;base64,%s", base64.StdEncoding.EncodeToString(HTMLContent(style, title, body)))
+
 	return chromedp.Tasks{
 		chromedp.Navigate(dataURL),
 		chromedp.ActionFunc(func(ctx context.Context) error {
