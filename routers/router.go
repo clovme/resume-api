@@ -7,6 +7,7 @@ import (
 	"html/template"
 	"io/fs"
 	"net/http"
+	"path/filepath"
 	"reflect"
 	"resume/middleware"
 	"resume/types/enums"
@@ -43,7 +44,7 @@ func Initialization(router *gin.Engine, db *gorm.DB, static *embed.FS) {
 	router.StaticFS("/assets", http.FS(staticFS))
 
 	// 配置静态文件目录
-	router.Static("/temp", enums.TempPath)
+	router.Static("/temp", filepath.Join(enums.DataPath, "temp"))
 
 	public := router.Group("/api")
 	protected := router.Group("/api")

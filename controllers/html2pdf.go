@@ -58,21 +58,21 @@ func Html2PDF(c *gin.Context) {
 	defer cancel()
 
 	// 创建浏览器上下文
-	ctx, cancel := chromedp.NewContext(allocCtx)
+	ctx, cancel := chromedp.NewContext(context.Background())
 	defer cancel()
 
 	// 捕获 PDF
 	var buf []byte
 	if err := chromedp.Run(ctx, libs.ToPDF(&buf, indexStyle, s.Resume.Name, request.HTMLContent)); err != nil {
-		allocCtx.Done()
 		ctx.Done()
+		allocCtx.Done()
 		log.Println("Html2PDF 生成 PDF 文档失败：", err.Error())
 		log.Println(fmt.Sprintf("Html2PDF 生成 PDF 文档失败，可能缺少Google浏览器，请下载Google浏览器，%s", enums.ChromeUrl))
 		s.Msg(http.StatusInternalServerError, "PDF 文档生成失败，请重试！")
 		return
 	}
 
-	_filePath := filepath.Join(enums.TempPath, s.User.ID)
+	_filePath := filepath.Join(enums.DataPath, "temp", s.User.ID)
 
 	err = os.WriteFile(_filePath, buf, 0o644)
 	if err != nil {
@@ -82,13 +82,13 @@ func Html2PDF(c *gin.Context) {
 	}
 
 	// 返回生成的 PDF
-	s.Json(http.StatusOK, s.Resume.Name+"的简历.pdf", strings.Replace(_filePath, filepath.Dir(enums.TempPath), "", 1))
+	s.Json(http.StatusOK, s.Resume.Name+"的简历.pdf", strings.Replace(_filePath, enums.DataPath, "", 1))
 }
 
 func DeletePDF(c *gin.Context) {
 	s := libs.Context(c)
 
-	_filePath := filepath.Join(enums.TempPath, s.User.ID)
+	_filePath := filepath.Join(enums.DataPath, "temp", s.User.ID)
 	if err := os.Remove(_filePath); err != nil {
 		log.Println(fmt.Sprintf("%s 删除失败！", _filePath), err.Error())
 		s.Msg(http.StatusInternalServerError, "PDF 文档生成失败，请重试！")
