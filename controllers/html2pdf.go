@@ -26,7 +26,6 @@ func Html2PDF(c *gin.Context) {
 		return
 	}
 
-	var fileIndex string
 	readDir, err := s.Embed.ReadDir("public/assets")
 	if err != nil {
 		log.Println("Html2PDF 读取 Embed 文件夹失败：", err.Error())
@@ -34,18 +33,12 @@ func Html2PDF(c *gin.Context) {
 		return
 	}
 
+	var indexStyles []string
 	for _, file := range readDir {
-		if strings.HasPrefix(file.Name(), "index-") && strings.HasSuffix(file.Name(), ".css") {
-			fileIndex = file.Name()
-			break
+		if (strings.HasPrefix(file.Name(), "index-") || strings.HasPrefix(file.Name(), "vendor-")) && strings.HasSuffix(file.Name(), ".css") {
+			indexStyle, _ := s.Embed.ReadFile(fmt.Sprintf("public/assets/%s", file.Name()))
+			indexStyles = append(indexStyles, string(indexStyle))
 		}
-	}
-
-	indexStyle, err := s.Embed.ReadFile(fmt.Sprintf("public/assets/%s", fileIndex))
-	if err != nil {
-		log.Println("Html2PDF 打开样式文件失败：", err.Error())
-		s.Msg(http.StatusInternalServerError, "系统错误，请重试！")
-		return
 	}
 
 	// 配置浏览器启动选项
@@ -58,12 +51,12 @@ func Html2PDF(c *gin.Context) {
 	defer cancel()
 
 	// 创建浏览器上下文
-	ctx, cancel := chromedp.NewContext(context.Background())
+	ctx, cancel := chromedp.NewContext(allocCtx)
 	defer cancel()
 
 	// 捕获 PDF
 	var buf []byte
-	if err := chromedp.Run(ctx, libs.ToPDF(&buf, indexStyle, s.Resume.Name, request.HTMLContent)); err != nil {
+	if err := chromedp.Run(ctx, libs.ToPDF(&buf, []byte(strings.Join(indexStyles, "")), s.Resume.Name, request.HTMLContent)); err != nil {
 		ctx.Done()
 		allocCtx.Done()
 		log.Println("Html2PDF 生成 PDF 文档失败：", err.Error())

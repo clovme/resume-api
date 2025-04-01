@@ -25,11 +25,11 @@ func init() {
 	fmt.Println(fmt.Sprintf("+ 使用 %s init 初始化配置文件。", filepath.Base(os.Args[0])))
 	fmt.Println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
 
-	if err := libs.DownloadChromeFile(static); err != nil {
-		fmt.Println("Chrome 浏览器下载失败，错误信息：", err)
-	} else {
-		fmt.Printf("Chrome 浏览器位置：%s。\n", enums.ChromeExePath)
-	}
+	//if err := libs.DownloadChromeFile(static); err != nil {
+	//	fmt.Println("Chrome 浏览器下载失败，错误信息：", err)
+	//} else {
+	//	fmt.Printf("Chrome 浏览器位置：%s。\n", enums.ChromeExePath)
+	//}
 	fmt.Printf("数据文件夹，位置：%s。\n", enums.DataPath)
 	fmt.Printf("临时数据文件夹，位置：%s。\n", filepath.Join(enums.DataPath, "temp"))
 }
@@ -108,7 +108,7 @@ func main() {
 	mode := cfg.Section("server").Key("mode").String()
 
 	fmt.Printf("日志级别：(%s)debug/release/test\n", mode)
-	fmt.Println(fmt.Sprintf("地址端口:http://%s:%s", host, port))
+	fmt.Println(fmt.Sprintf("地址端口：http://%s:%s", host, port))
 	gin.SetMode(mode)
 	router := gin.Default()
 	// 视图路由配置

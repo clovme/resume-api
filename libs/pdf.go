@@ -29,6 +29,7 @@ func HTMLContent(styleByte []byte, title, body string) []byte {
 </head>
 <body>` + body + `</body>
 </html>`
+	//os.WriteFile("index.html", []byte(htmlContent), 0644)
 	return []byte(htmlContent)
 }
 

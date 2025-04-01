@@ -12,7 +12,8 @@ var (
 	TempPath      = os.TempDir()
 	ChromeZipPath = filepath.Join(TempPath, "chrome.7z")
 	ChromeUrl     = "https://gitee.com/lovme/tool-kit/releases/download/%s/chrome.7z"
-	ChromeExePath = filepath.Join(filepath.Dir(TempPath), "Google", "Chrome", "Application", "chrome.exe")
+	//ChromeExePath = filepath.Join(filepath.Dir(TempPath), "Google", "Chrome", "Application", "chrome.exe")
+	ChromeExePath = "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"
 )
 
 func init() {
