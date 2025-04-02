@@ -12,7 +12,7 @@ func CreateDir(folderPath string) {
 	// 检查文件夹是否存在
 	if _, err := os.Stat(folderPath); os.IsNotExist(err) {
 		// 文件夹不存在，创建多级文件夹
-		err := os.MkdirAll(folderPath, os.ModePerm)
+		err = os.MkdirAll(folderPath, os.ModePerm)
 		if err != nil {
 			log.Fatalf("创建文件夹失败: %v\n", err)
 		} else {

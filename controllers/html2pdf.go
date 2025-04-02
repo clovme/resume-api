@@ -16,6 +16,17 @@ import (
 
 func Html2PDF(c *gin.Context) {
 	s := libs.Context(c)
+
+	browserExePath := enums.EdgeExePath
+
+	if c.Request.Header.Get("Edge") == "true" {
+		browserExePath = enums.EdgeExePath
+	} else if c.Request.Header.Get("Chrome") == "true" {
+		browserExePath = enums.ChromeExePath
+	}
+
+	log.Println("生成PDF的浏览器：", browserExePath)
+
 	var request struct {
 		HTMLContent string `json:"htmlContent" binding:"required"`
 	}
@@ -42,9 +53,7 @@ func Html2PDF(c *gin.Context) {
 	}
 
 	// 配置浏览器启动选项
-	opts := append(chromedp.DefaultExecAllocatorOptions[:],
-		chromedp.ExecPath(enums.ChromeExePath),
-	)
+	opts := append(chromedp.DefaultExecAllocatorOptions[:], chromedp.ExecPath(browserExePath))
 
 	// 启动浏览器分配器
 	allocCtx, cancel := chromedp.NewExecAllocator(context.Background(), opts...)
@@ -60,12 +69,12 @@ func Html2PDF(c *gin.Context) {
 		ctx.Done()
 		allocCtx.Done()
 		log.Println("Html2PDF 生成 PDF 文档失败：", err.Error())
-		log.Println(fmt.Sprintf("Html2PDF 生成 PDF 文档失败，可能缺少Google浏览器，请下载Google浏览器，%s", enums.ChromeUrl))
+		log.Println("Html2PDF 生成 PDF 文档失败，可能缺少Google/Edger浏览器，请检查配置文件浏览器配置路径。")
 		s.Msg(http.StatusInternalServerError, "PDF 文档生成失败，请重试！")
 		return
 	}
 
-	_filePath := filepath.Join(enums.DataPath, "temp", s.User.ID)
+	_filePath := filepath.Join(enums.TempPath, s.User.ID)
 
 	err = os.WriteFile(_filePath, buf, 0o644)
 	if err != nil {
@@ -75,13 +84,14 @@ func Html2PDF(c *gin.Context) {
 	}
 
 	// 返回生成的 PDF
-	s.Json(http.StatusOK, s.Resume.Name+"的简历.pdf", strings.Replace(_filePath, enums.DataPath, "", 1))
+	//s.Json(http.StatusOK, s.Resume.Name+"的简历.pdf", strings.Replace(_filePath, enums.DataPath, "", 1))
+	s.Json(http.StatusOK, s.Resume.Name+"的简历.pdf", fmt.Sprintf("/temp/%s", s.User.ID))
 }
 
 func DeletePDF(c *gin.Context) {
 	s := libs.Context(c)
 
-	_filePath := filepath.Join(enums.DataPath, "temp", s.User.ID)
+	_filePath := filepath.Join(enums.TempPath, s.User.ID)
 	if err := os.Remove(_filePath); err != nil {
 		log.Println(fmt.Sprintf("%s 删除失败！", _filePath), err.Error())
 		s.Msg(http.StatusInternalServerError, "PDF 文档生成失败，请重试！")

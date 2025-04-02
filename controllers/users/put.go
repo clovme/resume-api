@@ -1,8 +1,8 @@
 package users
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
+	"log"
 	"net/http"
 	"resume/libs"
 )
@@ -11,6 +11,6 @@ import (
 func Put(c *gin.Context) {
 	s := libs.Context(c)
 
-	fmt.Println(s.User)
+	log.Println(s.User)
 	s.Json(http.StatusOK, "用户", s.User)
 }

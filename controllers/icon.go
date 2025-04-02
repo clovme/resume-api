@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
+	"log"
 	"net/http"
 	"os"
 )
@@ -11,7 +11,7 @@ func GetIcon(c *gin.Context) {
 	// 打开文件，以只读方式打开
 	file, err := os.Open("D:\\develop\\vue\\resume-web\\src\\styles\\webfont\\variables.scss")
 	if err != nil {
-		fmt.Printf("Failed to open file: %v\n", err)
+		log.Printf("Failed to open file: %v\n", err)
 		return
 	}
 	defer file.Close()
@@ -20,10 +20,10 @@ func GetIcon(c *gin.Context) {
 	data := make([]byte, 1024) // 假设文件不超过1024字节
 	count, err := file.Read(data)
 	if err != nil {
-		fmt.Printf("Failed to read file: %v\n", err)
+		log.Printf("Failed to read file: %v\n", err)
 		return
 	}
 
-	fmt.Printf("Read %d bytes: %s\n", count, data[:count])
+	log.Printf("Read %d bytes: %s\n", count, data[:count])
 	c.String(http.StatusOK, string(data))
 }
