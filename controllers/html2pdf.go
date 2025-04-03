@@ -14,22 +14,16 @@ import (
 	"strings"
 )
 
+var request struct {
+	HTMLContent string `json:"htmlContent" binding:"required"`
+}
+
 func Html2PDF(c *gin.Context) {
 	s := libs.Context(c)
 
-	browserExePath := enums.EdgeExePath
+	bt := s.GetHeader("Browser-Type")
 
-	if c.Request.Header.Get("Edge") == "true" {
-		browserExePath = enums.EdgeExePath
-	} else if c.Request.Header.Get("Chrome") == "true" {
-		browserExePath = enums.ChromeExePath
-	}
-
-	log.Println("生成PDF的浏览器：", browserExePath)
-
-	var request struct {
-		HTMLContent string `json:"htmlContent" binding:"required"`
-	}
+	browserExePath := enums.BrowserExePath.Get(bt)
 
 	if err := c.ShouldBindJSON(&request); err != nil {
 		log.Println("Html2PDF 参数序列化失败：", err.Error())
@@ -69,7 +63,7 @@ func Html2PDF(c *gin.Context) {
 		ctx.Done()
 		allocCtx.Done()
 		log.Println("Html2PDF 生成 PDF 文档失败：", err.Error())
-		log.Println("Html2PDF 生成 PDF 文档失败，可能缺少Google/Edger浏览器，请检查配置文件浏览器配置路径。")
+		log.Println("Html2PDF 生成 PDF 文档失败，可能缺少Chrome/Edge浏览器，请检查配置文件浏览器配置路径。")
 		s.Msg(http.StatusInternalServerError, "PDF 文档生成失败，请重试！")
 		return
 	}

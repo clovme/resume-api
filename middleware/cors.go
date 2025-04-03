@@ -15,7 +15,7 @@ func CorsMiddleware() gin.HandlerFunc {
 		c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 
 		// 设置允许的请求头
-		c.Writer.Header().Set("Access-Control-Allow-Headers", "Authorization, Origin, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Authorization, Origin, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Browser-Type")
 
 		// 如果请求方法是 OPTIONS，则直接返回 200 状态码
 		if c.Request.Method == "OPTIONS" {
