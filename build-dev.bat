@@ -1,1 +1,0 @@
-go build -ldflags "-s -w" -trimpath -v -x -o "resume.exe"
