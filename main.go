@@ -86,6 +86,22 @@ func browserExePathSelect(cfg *ini.File, section, key, tip string) {
 	cfg.Section(section).Key(key).SetValue(enums.BrowserExePath.Get(key))
 }
 
+func fileExists(path string) bool {
+
+	if _, err := os.Stat(path); err != nil {
+		return false // 文件存在
+	}
+	return true
+}
+
+func BrowserCheck(path string) string {
+	if fileExists(path) {
+		return path
+	} else {
+		return fmt.Sprintf("%s(未配置)", path)
+	}
+}
+
 func main() {
 	// 读取 INI 文件
 	cfg, err := ini.Load(enums.ConfigPath)
@@ -98,8 +114,8 @@ func main() {
 		enums.BrowserExePath.Chrome = cfg.Section("Browser").Key("Chrome").String()
 	}
 
-	log.Printf("Edge浏览器：%s。\n", enums.BrowserExePath.Edge)
-	log.Printf("Chrome浏览器：%s。\n", enums.BrowserExePath.Chrome)
+	log.Printf("Edge浏览器：%s。\n", BrowserCheck(enums.BrowserExePath.Edge))
+	log.Printf("Chrome浏览器：%s。\n", BrowserCheck(enums.BrowserExePath.Chrome))
 
 	if len(os.Args) == 2 && strings.ToLower(os.Args[1]) == "init" {
 		cfg = ini.Empty()
